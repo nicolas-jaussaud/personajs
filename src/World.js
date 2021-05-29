@@ -26,7 +26,10 @@ class World {
 
       this.character = new Character(character, this.scene)
       character.scale.set(0.002,0.002,0.002)
-        
+      
+      character.castShadow = true;
+      character.receiveShadow = true;
+  
       this.characterCamera = new Camera(this.camera, this.character)
     })
 

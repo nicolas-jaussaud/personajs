@@ -7,7 +7,7 @@ class Camera {
 
     // Distance from the character
     this.distance = 4
-    this.height = 2.5
+    this.height = 3.5
 
     // Rotation speed
     this.speed = 30
@@ -76,19 +76,22 @@ class Camera {
     rotZ = Math.cos( (Math.PI / 2) + this.rotation )
     rotX = Math.sin( (Math.PI / 2) + this.rotation )
     
-    this.camera.position.x = this.character.object.position.x - this.distance * rotZ
-    this.camera.position.y = this.character.object.position.y + this.height
-    this.camera.position.z = this.character.object.position.z - this.distance * rotX
+    // We don't move or rotate on y while jumping
+    this.camera.position.y = this.character.isJumping() 
+      ? this.character.initialJumpPosition  + this.height 
+      : this.character.object.position.y + this.height
     
+    this.camera.position.x = this.character.object.position.x - this.distance * rotZ
+    this.camera.position.z = this.character.object.position.z - this.distance * rotX
+  
+    // Ajust rotation to be behind
     this.character.object.rotation.y = - this.rotation
 
-    this.camera.position.y = this.camera.position.y + 1
-    
     // A little above the character
     this.camera.lookAt(new THREE.Vector3(
       this.character.object.position.x,
-      this.character.object.position.y + 3,
-      this.character.object.position.z
+      this.character.isJumping() ? this.character.initialJumpPosition + 3 : this.character.object.position.y + 3,
+      this.character.object.position.z,
     ))
   }
 
