@@ -71,7 +71,6 @@ class Character {
 
   controlsStart(event) {
 
-    console.log(event.which)
     switch(event.which) {
       
       // Moving forward
