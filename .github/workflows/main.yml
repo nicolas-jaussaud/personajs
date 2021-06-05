@@ -1,0 +1,18 @@
+# https://github.com/marketplace/actions/ftp-deploy
+on: push
+name: Update demo site
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get last version
+      uses: actions/checkout@v2
+    
+    - name: Sync using SFTP access
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.controls-server }}
+        username: ${{ secrets.controls-username }}
+        password: ${{ secrets.controls-password }}
+        port: ${{ secrets.controls-port }}
