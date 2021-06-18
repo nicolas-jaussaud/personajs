@@ -16,7 +16,9 @@ class World {
     // False until loaded
     this.character          = false
     this.characterCamera    = false
-
+    
+    this.cubes = []
+    
     this.init()
   }
 
@@ -61,7 +63,7 @@ class World {
 
   cube(x, z) {
 
-    const geometry  = new THREE.BoxGeometry(5, 5, 5)
+    const geometry  = new THREE.BoxGeometry(5, 10, 5)
     const material  = new THREE.MeshStandardMaterial({color: 0x333311})
     const mesh      = new THREE.Mesh(geometry, material)
 
@@ -73,14 +75,37 @@ class World {
     mesh.castShadow = true
     mesh.receiveShadow = true
     
+    this.cubes.push(mesh) 
+    
     this.scene.add(mesh)
   }  
 
   render() {
+
     if(this.character && this.characterCamera) {
       this.character.render(this.clock)
-      this.characterCamera.render()
+      this.characterCamera.render()    
     }
+
+  }
+
+  /**
+   * @see https://discourse.threejs.org/t/avoiding-collision-between-two-boxes/11235/9
+   */
+  isCollision(object) {
+
+    const objectHitBox = new THREE.Box3().setFromObject(object)
+    let isCollision = false
+
+    this.cubes.map(cube => {
+
+      const cubeHitBox = new THREE.Box3().setFromObject(cube)
+      const collision = objectHitBox.intersectsBox(cubeHitBox)
+
+      if( collision ) isCollision = true
+    })
+
+    return isCollision
   }
 
   light() {

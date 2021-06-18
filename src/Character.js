@@ -4,6 +4,7 @@ class Character {
       
     this.object = object
     this.scene = scene
+    this.world = window.app.world
 
     this.speed = 0.5
 
@@ -63,6 +64,7 @@ class Character {
   isJumping = () => (this.directions.up || this.directions.down)
 
   loadAnimation(animationName) {
+
     this.anim.load(animationName + '.fbx', (anim) => {
 
       anim.animations[0].name = animationName 
@@ -86,14 +88,17 @@ class Character {
     if (this.mixer) {
       const delta = clock.getDelta()
       this.mixer.update(delta)
-    } 
+    }
+
+    // Save in case we need to reset position in case of collision
+    this.previousPosition = this.object.position.clone()
 
     // Move character
     if(this.directions.forward === true)  this.object.translateZ(this.speed)
     if(this.directions.left === true)     this.object.translateX(this.speed)
     if(this.directions.right === true)    this.object.translateX(-this.speed) 
     if(this.directions.backward === true) this.object.translateZ(-this.speed) 
-
+    
     // Jump (There might be a better way to handle this)
     if(this.directions.up === true) {
       
@@ -125,6 +130,23 @@ class Character {
         this.object.position.y = this.initialJumpPosition
         this.directions.down = false
       }
+    }
+
+    /**
+     * If there is a collision, we reset to the previous collision
+     * 
+     * This is OK with a static word, not sure about what will happen with moving things
+     * 
+     * @see https://stackoverflow.com/a/44938186/10491705
+     */
+    if( this.world.isCollision(this.object) ) {
+
+      // If we jump, we want to keep Y to move
+      this.object.position.set(
+        this.previousPosition.x, 
+        this.directions.up === true ? this.object.position.y : this.previousPosition.y, 
+        this.previousPosition.z
+      )
     }
   }
 

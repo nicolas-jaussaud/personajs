@@ -1,10 +1,10 @@
-
 window.app = {
   el: document.getElementById("app"),
   scene: null,
   renderer: null,
   camera: null,
-  keyboard: null
+  keyboard: null,
+  world: null
 }
 
 const init = () => {
@@ -36,6 +36,7 @@ const render = () => {
 init()
 
 const world = new World(app)
+window.app.world = world 
 
 render(world)
     
