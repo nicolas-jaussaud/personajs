@@ -3,7 +3,7 @@ window.app = {
   scene: null,
   renderer: null,
   camera: null,
-  keyboard: null,
+  keyboard: 'qwerty', // It hurts me be default should be qwerty
   world: null
 }
 
@@ -17,9 +17,8 @@ const init = () => {
   app.scene = new THREE.Scene()
   app.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
   app.clock = new THREE.Clock()
-
-  // Ugly way to ask if the user use azerty or qwerty
-  app.keyboard = confirm('Do you want to use an AZERTY layout? (otherwise will use QWERTY)') ? 'azerty' : 'qwerty' 
+  
+  initKeyboard()
 }
 
 const render = () => {
@@ -33,10 +32,33 @@ const render = () => {
   app.renderer.render(app.scene, app.camera)
 }
 
+const initKeyboard = () => {
+
+  const keyboard = document.getElementById('keyboard')
+  keyboard.value = app.keyboard
+
+  changeKeyboard()
+
+  keyboard.addEventListener('change', changeKeyboard)
+}
+
+const changeKeyboard = () => {
+
+  app.keyboard = keyboard.value
+  
+  if(keyboard.value === 'azerty') {
+    document.getElementById('azerty').setAttribute('style', '')
+    document.getElementById('qwerty').setAttribute('style', 'display: none')
+  }
+  else {
+    document.getElementById('azerty').setAttribute('style', 'display: none')
+    document.getElementById('qwerty').setAttribute('style', '')
+  }
+}
+
 init()
 
 const world = new World(app)
 window.app.world = world 
 
 render(world)
-    
