@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 915 290" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g>
+        <g id="spring-island" serif:id="spring island" transform="matrix(0.942663,0,0,0.918561,-192.373,225.443)">
+            <rect x="204.074" y="-0.272" width="135.786" height="69.674" style="fill:none;"/>
+            <clipPath id="_clip1">
+                <rect x="204.074" y="-0.272" width="135.786" height="69.674"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g transform="matrix(0.95632,0,4.90338e-33,1.30693,255.12,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(156,83,0);"/>
+                </g>
+                <g transform="matrix(0.95632,0,3.26892e-33,1.30693,187.227,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,185,0);"/>
+                </g>
+            </g>
+        </g>
+        <g id="summer-island" serif:id="summer island" transform="matrix(0.942663,0,0,0.918561,54.8078,225.443)">
+            <rect x="204.074" y="-0.272" width="135.786" height="69.674" style="fill:none;"/>
+            <clipPath id="_clip2">
+                <rect x="204.074" y="-0.272" width="135.786" height="69.674"/>
+            </clipPath>
+            <g clip-path="url(#_clip2)">
+                <g transform="matrix(0.95632,0,4.90338e-33,1.30693,255.12,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(156,83,0);"/>
+                </g>
+                <g transform="matrix(0.95632,0,4.90338e-33,1.30693,187.227,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,121,0);"/>
+                </g>
+            </g>
+        </g>
+        <g id="summer-trees" serif:id="summer trees" transform="matrix(0.97195,0,1.04083e-17,1.25254,252.028,7.114)">
+            <rect x="-4.987" y="-5.68" width="197.541" height="153.288" style="fill:none;"/>
+            <clipPath id="_clip3">
+                <rect x="-4.987" y="-5.68" width="197.541" height="153.288"/>
+            </clipPath>
+            <g clip-path="url(#_clip3)">
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(159,88,10);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(126,44,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(103,75,61);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(239,239,239);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,158,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,121,0);"/>
+                </g>
+            </g>
+        </g>
+        <g id="fall-island" serif:id="fall island" transform="matrix(0.942663,0,0,0.918561,301.989,225.443)">
+            <rect x="204.074" y="-0.272" width="135.786" height="69.674" style="fill:none;"/>
+            <clipPath id="_clip4">
+                <rect x="204.074" y="-0.272" width="135.786" height="69.674"/>
+            </clipPath>
+            <g clip-path="url(#_clip4)">
+                <g transform="matrix(0.95632,0,4.90338e-33,1.30693,255.12,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(156,83,0);"/>
+                </g>
+                <g transform="matrix(0.95632,0,3.26892e-33,1.30693,187.227,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(236,96,45);"/>
+                </g>
+            </g>
+        </g>
+        <g id="winter-island" serif:id="winter island" transform="matrix(0.942663,0,0,0.918561,530.535,225.443)">
+            <rect x="204.074" y="-0.272" width="135.786" height="69.674" style="fill:none;"/>
+            <clipPath id="_clip5">
+                <rect x="204.074" y="-0.272" width="135.786" height="69.674"/>
+            </clipPath>
+            <g clip-path="url(#_clip5)">
+                <g transform="matrix(0.95632,0,4.90338e-33,1.30693,255.12,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(156,83,0);"/>
+                </g>
+                <g transform="matrix(0.95632,0,3.26892e-33,1.30693,187.227,-10.6198)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:white;"/>
+                </g>
+            </g>
+        </g>
+        <g id="winter-trees" serif:id="winter trees" transform="matrix(0.97195,0,1.04083e-17,1.25254,727.755,7.114)">
+            <rect x="-4.987" y="-5.68" width="197.541" height="153.288" style="fill:none;"/>
+            <clipPath id="_clip6">
+                <rect x="-4.987" y="-5.68" width="197.541" height="153.288"/>
+            </clipPath>
+            <g clip-path="url(#_clip6)">
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(159,88,10);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(126,44,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(103,75,61);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:white;"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(239,239,239);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,156,0);"/>
+                </g>
+            </g>
+        </g>
+        <g id="_-fall-trees" serif:id=" fall trees" transform="matrix(0.97195,0,1.04083e-17,1.25254,499.209,7.114)">
+            <rect x="-4.987" y="-5.68" width="197.541" height="153.288" style="fill:none;"/>
+            <clipPath id="_clip7">
+                <rect x="-4.987" y="-5.68" width="197.541" height="153.288"/>
+            </clipPath>
+            <g clip-path="url(#_clip7)">
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(159,88,10);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(126,44,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(103,75,61);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(236,96,45);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(255,112,15);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(239,239,239);"/>
+                </g>
+            </g>
+        </g>
+        <g id="spring-trees" serif:id="spring trees" transform="matrix(0.97195,0,1.04083e-17,1.25254,4.84712,7.114)">
+            <rect x="-4.987" y="-5.68" width="197.541" height="153.288" style="fill:none;"/>
+            <clipPath id="_clip8">
+                <rect x="-4.987" y="-5.68" width="197.541" height="153.288"/>
+            </clipPath>
+            <g clip-path="url(#_clip8)">
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(133,65,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,88.924)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(159,88,10);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(126,44,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,37.8279)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(103,75,61);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,-21.3264,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,185,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,44.5207,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(0,220,0);"/>
+                </g>
+                <g transform="matrix(0.927504,0,-1.02637e-17,0.958447,110.368,-13.2682)">
+                    <rect x="17.616" y="7.918" width="70.994" height="53.311" style="fill:rgb(239,239,239);"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

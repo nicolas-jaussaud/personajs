@@ -9,5 +9,8 @@ See [example](https://nicolasjaussaud.me/examples/character-controls)
 - `npm run start`
 
 ## Sources
-Character: https://www.cgtrader.com/free-3d-models/character/woman/low-9fd52c98-570a-424b-aa88-f1d9585b0269
-Character animations: https://www.mixamo.com
+Free 3D ressources created by [Razvan Savescu](https://www.cgtrader.com/singleway):
+- [Low-poly Girl](https://www.cgtrader.com/free-3d-models/character/woman/low-9fd52c98-570a-424b-aa88-f1d9585b0269)
+- [Blocky Trees](https://www.cgtrader.com/free-3d-models/plant/other/blocky-trees-pack)
+ 
+Animations from [Mixamo](https://www.mixamo.com)
