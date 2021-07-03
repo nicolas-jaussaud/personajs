@@ -21,8 +21,9 @@ class World {
     this.worldObjects = []
     
     // Needed to load dynamically
-    this.loadedMap = []
-    this.mapSize = 50
+    this.loadedSquare = []
+    this.squareSize = 40
+    this.threesPerSquare = 3
 
     this.init()
   }
@@ -35,57 +36,115 @@ class World {
       character.scale.set(0.002,0.002,0.002)
       
       this.scene.add(character)
-  
+      
       this.characterCamera = new Camera(this.camera, this.character)
     })
 
-    this.floor()
+    this.initSquares()
     this.light()
-    this.trees()
     this.sky()
   }
 
-  floor() {
+  initSquares() { 
+
+    // Initial user square
+    this.loadSquareMap({
+      x: [-(this.squareSize / 2), this.squareSize / 2],
+      z: [-(this.squareSize / 2), this.squareSize / 2]
+    })
+
+    // Check if we load more tree according to user position
+    setInterval(() => this.shouldLoadTree(), 500)
+  }
+
+  createSquareFloor(coordinates) {
   
-    const geometry  = new THREE.PlaneGeometry( 8000, 8000 )
+    const geometry  = new THREE.PlaneGeometry( this.squareSize, this.squareSize )
     const material  = new THREE.MeshBasicMaterial( {color: 0x55ff66, side: THREE.DoubleSide} );
-    const plane     = new THREE.Mesh( geometry, material )
+    const square    = new THREE.Mesh( geometry, material )
 
-    this.scene.add(plane);
+    this.scene.add(square);
 
-    plane.rotation.x = Math.PI / 2
+    square.position.x = (coordinates.x[1] + coordinates.x[0]) / 2
+    square.position.z = (coordinates.z[1] + coordinates.z[0]) / 2
+
+    square.rotation.x = Math.PI / 2
   }
 
-  trees() {
+  loadSquareMap(coordinates) {
 
-    this.loadMap(0, 0)
+    // We don't want to reload this square
+    const loadedKey = coordinates.x[0] + '-' + coordinates.x[1] + '-' + coordinates.z[0] + '-' + coordinates.z[1]
+    
+    if( this.loadedSquare[ loadedKey ] ) return;
 
-    // CHeck if we load more tree according to user position
-    setInterval(() => this.shouldLoadTree(), 1000)
-  }
-
-  loadMap(x, z) {
-
-    this.loadedMap[ x + '-' + z ] = true
+    this.loadedSquare[ loadedKey ] = true
+    
+    this.createSquareFloor(coordinates)
 
     this.loadTreesFile(() => {
-      for (let i = 0; i < 25; i++) this.addTree(x, z)
+      for (let i = 0; i < this.threesPerSquare; i++) this.addRandomTree(coordinates)
     })
+
+    console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
   }
 
   shouldLoadTree() {
     
     const currentX = this.character.object.position.x
     const currentZ = this.character.object.position.z
-    
-    const mapX = Math.ceil(currentX / 50) * 50
-    const mapZ = Math.ceil(currentZ / 50) * 50
 
-    const mapName = mapX + '-' + mapZ
+    // Get current square coordinate (need to remove half square size because first square is centered on 0, and not start at 0)
+    const upX = ( Math.ceil(currentX / this.squareSize) * this.squareSize ) + this.squareSize / 2
+    const upZ = ( Math.ceil(currentZ / this.squareSize) * this.squareSize ) + this.squareSize / 2
     
-    if( this.loadedMap[ mapName ]) return;
+    const lowX = upX - this.squareSize
+    const lowZ = upZ - this.squareSize
 
-    this.loadMap(mapX, mapZ)
+    console.info('Current square is: ' + lowX + ' ' + upX + ' ' + lowZ + ' ' + upZ)
+
+    /**
+     * Make the 8 square around current one are loaded
+     */
+
+    // 3 squares with lower X position 
+    this.loadSquareMap({
+      x: [lowX - this.squareSize, upX - this.squareSize],
+      z: [lowZ, upZ],
+    })
+    this.loadSquareMap({
+      x: [lowX - this.squareSize, upX - this.squareSize],
+      z: [lowZ + this.squareSize, upZ + this.squareSize],
+    })
+    this.loadSquareMap({
+      x: [lowX - this.squareSize, upX - this.squareSize],
+      z: [lowZ - this.squareSize, upZ - this.squareSize],
+    })
+    
+    // 2 squares with same X position 
+    this.loadSquareMap({
+      x: [lowX, upX],
+      z: [lowZ + this.squareSize, upZ + this.squareSize],
+    })
+    this.loadSquareMap({
+      x: [lowX, upX],
+      z: [lowZ - this.squareSize, upZ - this.squareSize],
+    })
+    
+    // 3 squares with upper X position 
+    this.loadSquareMap({
+      x: [lowX + this.squareSize, upX + this.squareSize],
+      z: [lowZ, upZ],
+    })
+    this.loadSquareMap({
+      x: [lowX + this.squareSize, upX + this.squareSize],
+      z: [lowZ + this.squareSize, upZ + this.squareSize],
+    })
+    this.loadSquareMap({
+      x: [lowX + this.squareSize, upX + this.squareSize],
+      z: [lowZ - this.squareSize, upZ - this.squareSize],
+    })
+    
   }
 
   /**
@@ -110,7 +169,7 @@ class World {
   /**
    * Create random trees around the user
    */
-  addTree(x, z) {
+   addRandomTree(coordinates) {
 
     const treeNumber = Math.random() * (8 - 1) + 1
     const fileName = 'trees/forest' + (parseInt(treeNumber) + 1) + '.fbx'
@@ -119,20 +178,18 @@ class World {
     
     tree.scale.set(0.004,0.004,0.004)
     
-    this.setRandomPosition(tree, x, z)    
+    this.setRandomPosition(tree, coordinates)    
   }
 
-  setRandomPosition(object, x, z) {
-
-    this.scene.add(object)
+  setRandomPosition(object, coordinates) {
     
-    const maxX = x + this.mapSize
-    const minX = x - this.mapSize
-    const maxZ = z + this.mapSize
-    const minZ = z - this.mapSize
+    this.scene.add(object)
 
-    const positionX = Math.random() * (maxX - minX) + minX
-    const positionZ = Math.random() * (maxZ + minZ) + minZ
+    /**
+     * @see https://stackoverflow.com/a/67746339/10491705
+     */
+    const positionX = Math.floor(Math.random() * (coordinates.x[1] - coordinates.x[0] + 1)) + coordinates.x[0]
+    const positionZ = Math.floor(Math.random() * (coordinates.z[1] - coordinates.z[0] + 1)) + coordinates.z[0]
 
     object.position.x = positionX 
     object.position.z = positionZ 
