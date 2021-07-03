@@ -91,10 +91,11 @@ class World {
 
   shouldLoadTree() {
     
-    const currentX = this.character.object.position.x
-    const currentZ = this.character.object.position.z
+    // If character not loaded yet, position will be 0
+    const currentX = this.character !== false ? this.character.object.position.x : 0
+    const currentZ = this.character !== false ? this.character.object.position.z : 0
 
-    // Get current square coordinate (need to remove half square size because first square is centered on 0, and not start at 0)
+    // Get current square coordinate (need to add half square size because first square is centered on 0)
     const upX = ( Math.ceil(currentX / this.squareSize) * this.squareSize ) + this.squareSize / 2
     const upZ = ( Math.ceil(currentZ / this.squareSize) * this.squareSize ) + this.squareSize / 2
     
