@@ -54,7 +54,7 @@ class World {
     })
 
     // Check if we load more tree according to user position
-    setInterval(() => this.shouldLoadTree(), 500)
+    setInterval(() => this.shouldLoadSquare(), 500)
   }
 
   createSquareFloor(coordinates) {
@@ -89,7 +89,7 @@ class World {
     console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
   }
 
-  shouldLoadTree() {
+  shouldLoadSquare() {
     
     // If character not loaded yet, position will be 0
     const currentX = this.character !== false ? this.character.object.position.x : 0

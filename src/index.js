@@ -3,7 +3,7 @@ window.app = {
   scene: null,
   renderer: null,
   camera: null,
-  keyboard: 'qwerty', // It hurts me be default should be qwerty
+  keyboard: 'qwerty', // It hurts me but default should be qwerty
   world: null
 }
 
