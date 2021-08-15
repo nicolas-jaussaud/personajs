@@ -9,8 +9,10 @@ See [example](https://nicolasjaussaud.me/examples/character-controls)
 - `npm run start`
 
 ## Sources
-Free 3D ressources created by [Razvan Savescu](https://www.cgtrader.com/singleway):
-- [Low-poly Girl](https://www.cgtrader.com/free-3d-models/character/woman/low-9fd52c98-570a-424b-aa88-f1d9585b0269)
-- [Blocky Trees](https://www.cgtrader.com/free-3d-models/plant/other/blocky-trees-pack)
- 
-Animations from [Mixamo](https://www.mixamo.com)
+Free 3D ressources:
+- [Low-poly Girl](https://www.cgtrader.com/free-3d-models/character/woman/low-9fd52c98-570a-424b-aa88-f1d9585b0269) created by [Razvan Savescu](https://www.cgtrader.com/singleway)
+- [Blocky Trees](https://www.cgtrader.com/free-3d-models/plant/other/blocky-trees-pack) by [Razvan Savescu](https://www.cgtrader.com/singleway)
+- [Low Poly Buildings](https://free3d.com/3d-model/19-low-poly-buildings-974347.html) created by [Backlog](https://free3d.com/user/backlog_s)
+- [Cartoon Low Poly Sportcar](https://www.cgtrader.com/free-3d-models/car/concept/cartoon-low-poly-sportcar) created by [Anton Moek](https://www.cgtrader.com/antonmoek)
+
+Character animations from [Mixamo](https://www.mixamo.com)

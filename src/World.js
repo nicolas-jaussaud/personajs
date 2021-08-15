@@ -3,7 +3,9 @@ class World {
   constructor(app) {
 
     this.loader =  {
-      fbx: new THREE.FBXLoader()
+      fbx: new THREE.FBXLoader(),
+      mtl: new THREE.MTLLoader(),
+      obj: new THREE.OBJLoader(),
     }
 
     this.objectPath = './objects/'
@@ -25,6 +27,9 @@ class World {
     this.squareSize = 60
     this.roadSize = 30
     this.threesPerSquare = 10
+
+    this.carNumber = 0
+    this.maxCarNumber = 2
 
     this.init()
   }
@@ -107,7 +112,7 @@ class World {
     const randomSquareType = Math.floor(Math.random() * 6) + 1
 
     /**
-     * 5/6 time it's a bulding square, otherwise a park square
+     * 5/6 of the time it's a bulding square, otherwise a park square
      */
     switch(randomSquareType) {
 
@@ -121,7 +126,32 @@ class World {
       default: this.loadBuildingsFile(() => this.addRandomBuilding(coordinates))
     }
 
+    this.loadCar(() => this.addCar(coordinates))
+
     console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
+  }
+
+  squareExists(x, z) {
+
+    const square = this.getSquare(x, z)
+
+    const loadedKey = square.lowX + '-' + square.upX + '-' + square.lowZ + '-' + square.upZ
+    
+    return this.loadedSquare[ loadedKey ] ? true : false
+  }
+
+  getSquare(x, z) {
+
+    const halfSquare = this.squareSize / 2
+    const coordinates = {}
+
+    coordinates.lowZ = Math.ceil( (z - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
+    coordinates.lowX = Math.ceil( (x - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
+    
+    coordinates.upX = coordinates.lowX + this.squareSize
+    coordinates.upZ = coordinates.lowZ + this.squareSize
+
+    return coordinates
   }
 
   shouldLoadSquare() {
@@ -130,15 +160,9 @@ class World {
     const currentX = this.character !== false ? this.character.object.position.x : 0
     const currentZ = this.character !== false ? this.character.object.position.z : 0
     
-    const halfSquare = this.squareSize / 2
-    
-    const lowZ = Math.ceil( (currentZ - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
-    const lowX = Math.ceil( (currentX - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
-    
-    const upX = lowX + this.squareSize
-    const upZ = lowZ + this.squareSize
+    const square = this.getSquare(currentX, currentZ)
 
-    console.info('Current square is: ' + lowX + ' ' + upX + ' ' + lowZ + ' ' + upZ)
+    console.info('Current square is: ' + square.lowX + ' ' + square.upX + ' ' + square.lowZ + ' ' + square.upZ)
 
     /**
      * Make the 8 square around current one are loaded
@@ -146,40 +170,40 @@ class World {
 
     // 3 squares with lower X position 
     this.loadSquareMap({
-      x: [lowX - this.squareSize, upX - this.squareSize],
-      z: [lowZ, upZ],
+      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
+      z: [square.lowZ, square.upZ],
     })
     this.loadSquareMap({
-      x: [lowX - this.squareSize, upX - this.squareSize],
-      z: [lowZ + this.squareSize, upZ + this.squareSize],
+      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
+      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
     })
     this.loadSquareMap({
-      x: [lowX - this.squareSize, upX - this.squareSize],
-      z: [lowZ - this.squareSize, upZ - this.squareSize],
+      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
+      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
     })
     
     // 2 squares with same X position 
     this.loadSquareMap({
-      x: [lowX, upX],
-      z: [lowZ + this.squareSize, upZ + this.squareSize],
+      x: [square.lowX, square.upX],
+      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
     })
     this.loadSquareMap({
-      x: [lowX, upX],
-      z: [lowZ - this.squareSize, upZ - this.squareSize],
+      x: [square.lowX, square.upX],
+      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
     })
     
     // 3 squares with upper X position 
     this.loadSquareMap({
-      x: [lowX + this.squareSize, upX + this.squareSize],
-      z: [lowZ, upZ],
+      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
+      z: [square.lowZ, square.upZ],
     })
     this.loadSquareMap({
-      x: [lowX + this.squareSize, upX + this.squareSize],
-      z: [lowZ + this.squareSize, upZ + this.squareSize],
+      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
+      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
     })
     this.loadSquareMap({
-      x: [lowX + this.squareSize, upX + this.squareSize],
-      z: [lowZ - this.squareSize, upZ - this.squareSize],
+      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
+      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
     })
     
   }
@@ -243,6 +267,104 @@ class World {
     building.scale.set(0.1, 0.1, 0.1)
     
     this.setCenterPosition(building, coordinates)   
+  }
+
+  loadCar(callback) {
+    this.mtl('car/Low_Poly_Sportcar.mtl', texture => {
+      this.obj('car/Low_Poly_Sportcar.obj', car => callback(car))
+    })
+  }
+
+  /**
+   * TODO: Handle car in separte file 
+   */
+  addCar(coordinates) {
+
+    // Only one car at once to avoid too much objects
+    if( this.carNumber >= this.maxCarNumber ) return;
+
+    this.carNumber = this.carNumber + 1
+
+    // No need to clone because always same car
+    const fileName = 'car/Low_Poly_Sportcar.obj'
+    const car = this.loadedObject[ fileName ]
+
+    car.scale.set(0.01, 0.01, 0.01)
+    
+    // Chose a direction so that the care we come to the user
+    car.direction = Math.floor(Math.random() * 4) + 1
+    car.position.y = 0.9
+
+    console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
+
+    switch(car.direction) {
+
+      case 1:
+        car.rotation.y = 0
+
+        car.position.x = coordinates.x[0]
+        car.position.z = coordinates.z[0] + 4.5
+        break;
+
+      case 2:
+        car.rotation.y = Math.PI
+
+        car.position.x = coordinates.x[1]
+        car.position.z = coordinates.z[1] - 4.5
+        break;
+
+      case 3:
+        car.rotation.y = -Math.PI / 2
+
+        car.position.x = coordinates.x[0] - 4.5
+        car.position.z = coordinates.z[0] 
+        break;
+
+      case 4:
+        car.rotation.y = Math.PI / 2
+
+        car.position.x = coordinates.x[1] + 4.5
+        car.position.z = coordinates.z[1] 
+        break;
+    }
+
+    this.scene.add(car)
+
+    const carMovement = setInterval(() => {
+      
+      switch(car.direction) {
+        case 1: car.position.x = car.position.x + 1; break;
+        case 2: car.position.x = car.position.x - 1; break;
+        case 3: car.position.z = car.position.z + 1; break;
+        case 4: car.position.z = car.position.z - 1; break;
+      }
+
+      const characterVector = new THREE.Vector3( 
+        this.character.object.position.x,
+        this.character.object.position.y,  
+        this.character.object.position.z 
+      )
+
+      const carVector = new THREE.Vector3(
+        car.position.x, 
+        car.position.y, 
+        car.position.z
+      )
+
+      // If car is far or if it reach a non generated square
+      if( carVector.distanceTo(characterVector) > 200 || !this.squareExists(car.position.x, car.position.z)) {
+
+        clearInterval(carMovement)
+        
+        this.scene.remove(car)
+
+        this.carNumber = this.carNumber - 1
+
+        console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
+      }
+
+    }, 30)
+
   }
 
   setRandomPosition(object, coordinates) {
@@ -351,6 +473,45 @@ class World {
         fbx.receiveShadow = true
         
         if(callback) callback(fbx)
+      },
+      (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
+      (error) => console.log('An error happened')
+    )
+  }
+
+  obj = async (name, callback = false, texture = false) => {
+    
+    if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
+  
+    return this.loader.obj.load(this.objectPath + name, obj => {
+      
+        this.loadedObject[ name ] = obj
+
+        obj.castShadow    = true
+        obj.receiveShadow = true
+        
+        if(callback) callback(obj)
+      },
+      (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
+      (error) => console.log('An error happened')
+    )    
+  }
+
+  mtl = async (name, callback = false) => {
+
+    if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
+
+    return this.loader.mtl.load(this.objectPath + name, mtl => {
+      
+        mtl.preload()
+        this.loader.obj.setMaterials( mtl )
+        
+        this.loadedObject[ name ] = mtl
+
+        mtl.castShadow    = true
+        mtl.receiveShadow = true
+
+        if(callback) callback(mtl)
       },
       (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
       (error) => console.log('An error happened')
