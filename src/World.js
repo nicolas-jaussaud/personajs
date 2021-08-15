@@ -129,13 +129,14 @@ class World {
     // If character not loaded yet, position will be 0
     const currentX = this.character !== false ? this.character.object.position.x : 0
     const currentZ = this.character !== false ? this.character.object.position.z : 0
-
-    // Get current square coordinate (need to add half square size because first square is centered on 0)
-    const upX = ( Math.ceil(currentX / this.squareSize) * this.squareSize ) + this.squareSize / 2
-    const upZ = ( Math.ceil(currentZ / this.squareSize) * this.squareSize ) + this.squareSize / 2
     
-    const lowX = upX - this.squareSize
-    const lowZ = upZ - this.squareSize
+    const halfSquare = this.squareSize / 2
+    
+    const lowZ = Math.ceil( (currentZ - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
+    const lowX = Math.ceil( (currentX - halfSquare) / this.squareSize ) * this.squareSize - halfSquare
+    
+    const upX = lowX + this.squareSize
+    const upZ = lowZ + this.squareSize
 
     console.info('Current square is: ' + lowX + ' ' + upX + ' ' + lowZ + ' ' + upZ)
 
@@ -238,7 +239,7 @@ class World {
 
     const buildingNumber = Math.random() * (buildings.children.length - 1) + 1
     const building = buildings.children[ parseInt(buildingNumber) ] 
-    
+
     building.scale.set(0.1, 0.1, 0.1)
     
     this.setCenterPosition(building, coordinates)   
