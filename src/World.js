@@ -22,8 +22,9 @@ class World {
     
     // Needed to load dynamically
     this.loadedSquare = []
-    this.squareSize = 40
-    this.threesPerSquare = 3
+    this.squareSize = 60
+    this.roadSize = 30
+    this.threesPerSquare = 10
 
     this.init()
   }
@@ -51,27 +52,45 @@ class World {
     this.loadSquareMap({
       x: [-(this.squareSize / 2), this.squareSize / 2],
       z: [-(this.squareSize / 2), this.squareSize / 2]
-    })
+    }, true)
 
     // Check if we load more tree according to user position
     setInterval(() => this.shouldLoadSquare(), 500)
   }
 
+  /**
+   * Square base is road + sidewalk
+   */
   createSquareFloor(coordinates) {
-  
-    const geometry  = new THREE.PlaneGeometry( this.squareSize, this.squareSize )
-    const material  = new THREE.MeshBasicMaterial( {color: 0x55ff66, side: THREE.DoubleSide} );
-    const square    = new THREE.Mesh( geometry, material )
 
-    this.scene.add(square);
+    // White band of the road
+    this.addPlaneGeometry( this.squareSize, coordinates, 0xFFFFFF, 0 )
+    
+    // Road
+    const roadSize = this.squareSize - (this.roadSize * 0.01)
+    this.addPlaneGeometry( roadSize, coordinates, 0x555555, 1 )
 
-    square.position.x = (coordinates.x[1] + coordinates.x[0]) / 2
-    square.position.z = (coordinates.z[1] + coordinates.z[0]) / 2
-
-    square.rotation.x = Math.PI / 2
+    // Lawn
+    const lawnSize = this.squareSize - (this.roadSize / 2)
+    this.addPlaneGeometry( lawnSize, coordinates, 0x55FF66, 2 )
   }
 
-  loadSquareMap(coordinates) {
+  addPlaneGeometry(size, coordinates, color, zIndex) {
+
+    const geometry  = new THREE.PlaneGeometry( size, size )
+    const material  = new THREE.MeshPhongMaterial( {color: color } )
+    const mesh      = new THREE.Mesh( geometry, material )
+    
+    mesh.position.x = (coordinates.x[1] + coordinates.x[0]) / 2
+    mesh.position.z = (coordinates.z[1] + coordinates.z[0]) / 2
+    mesh.position.y = 0 + (zIndex / 100)
+
+    mesh.rotation.x = - Math.PI / 2
+
+    this.scene.add(mesh)
+  }
+
+  loadSquareMap(coordinates, firstSquare =  false) {
 
     // We don't want to reload this square
     const loadedKey = coordinates.x[0] + '-' + coordinates.x[1] + '-' + coordinates.z[0] + '-' + coordinates.z[1]
@@ -82,9 +101,25 @@ class World {
     
     this.createSquareFloor(coordinates)
 
-    this.loadTreesFile(() => {
-      for (let i = 0; i < this.threesPerSquare; i++) this.addRandomTree(coordinates)
-    })
+    // First square has to be empty
+    if( firstSquare ) return;
+
+    const randomSquareType = Math.floor(Math.random() * 6) + 1
+
+    /**
+     * 5/6 time it's a bulding square, otherwise a park square
+     */
+    switch(randomSquareType) {
+
+      // Park
+      case 4: this.loadTreesFile(() => {
+        for (let i = 0; i < this.threesPerSquare; i++) this.addRandomTree(coordinates)
+      })
+      break;
+      
+      // Building
+      default: this.loadBuildingsFile(() => this.addRandomBuilding(coordinates))
+    }
 
     console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
   }
@@ -168,9 +203,23 @@ class World {
   }
 
   /**
+   * Load FBX files for buildings
+   */
+  loadBuildingsFile(callback) {
+
+    const loaded = []
+    const fileName = 'buildings/buildings.fbx'
+      
+    this.fbx(fileName, (object) => {
+      loaded.push(object)
+      callback()
+    })
+  }
+
+  /**
    * Create random trees around the user
    */
-   addRandomTree(coordinates) {
+  addRandomTree(coordinates) {
 
     const treeNumber = Math.random() * (8 - 1) + 1
     const fileName = 'trees/forest' + (parseInt(treeNumber) + 1) + '.fbx'
@@ -182,15 +231,40 @@ class World {
     this.setRandomPosition(tree, coordinates)    
   }
 
+  addRandomBuilding(coordinates) {
+    
+    const fileName = 'buildings/buildings.fbx'
+    const buildings = this.loadedObject[ fileName ].clone()
+
+    const buildingNumber = Math.random() * (buildings.children.length - 1) + 1
+    const building = buildings.children[ parseInt(buildingNumber) ] 
+    
+    building.scale.set(0.1, 0.1, 0.1)
+    
+    this.setCenterPosition(building, coordinates)   
+  }
+
   setRandomPosition(object, coordinates) {
     
     this.scene.add(object)
 
+    // We don't wan to add anything on the road
+    const innerSquare = {
+      x: [
+        coordinates.x[0] + (this.roadSize / 2), 
+        coordinates.x[1] - (this.roadSize / 2) 
+      ],
+      z: [
+        coordinates.z[0] + (this.roadSize / 2), 
+        coordinates.z[1] - (this.roadSize / 2) 
+      ]
+    }
+
     /**
      * @see https://stackoverflow.com/a/67746339/10491705
      */
-    const positionX = Math.floor(Math.random() * (coordinates.x[1] - coordinates.x[0] + 1)) + coordinates.x[0]
-    const positionZ = Math.floor(Math.random() * (coordinates.z[1] - coordinates.z[0] + 1)) + coordinates.z[0]
+    const positionX = Math.floor(Math.random() * (innerSquare.x[1] - innerSquare.x[0] + 1)) + innerSquare.x[0]
+    const positionZ = Math.floor(Math.random() * (innerSquare.z[1] - innerSquare.z[0] + 1)) + innerSquare.z[0]
 
     object.position.x = positionX 
     object.position.z = positionZ 
@@ -207,7 +281,18 @@ class World {
       this.scene.remove(object.name)
       this.worldObjects.pop(object)
     }
-}
+  }
+
+  setCenterPosition(object, coordinates) {
+
+    this.scene.add(object)
+
+    object.position.x = coordinates.x[1] - (this.squareSize / 2) 
+    object.position.z = coordinates.z[1] - (this.squareSize / 2) 
+    object.position.y = -0.2
+
+    this.worldObjects.push(object)
+  }
 
   render() {
 
@@ -239,25 +324,23 @@ class World {
 
   light() {
 
-    const ambientLight  = new THREE.AmbientLight('rgb(255, 255, 255)', 1)
-    const sideLight     = new THREE.DirectionalLight('rgb(255, 255, 150)', 1)
+    const sideLight = new THREE.DirectionalLight('rgb(200, 230, 255)', 0.8)
+    const hemiLight = new THREE.HemisphereLight( 0x9999FF, 0x88ffFF, 0.7 ); 
     
-    sideLight.position.set(800, 800, 100).normalize()
+    sideLight.position.set(-7000000, 10000000, 100)
     sideLight.rotation.x = 0
 
-    this.scene.add(ambientLight)
+    this.scene.add(hemiLight)
     this.scene.add(sideLight)
   }
 
-  sky() {
-    this.scene.background = new THREE.Color( 0x55BBFF )
-  }
+  sky = () => this.scene.background = new THREE.Color( 0x55BBFF )
 
   fbx = async (name, callback = false) => {
 
     // Already loaded
     if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
-
+    
     return this.loader.fbx.load(this.objectPath + name,
       (fbx) => {
         
