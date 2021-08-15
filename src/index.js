@@ -63,3 +63,5 @@ const world = new World(app)
 window.app.world = world 
 
 render(world)
+
+document.getElementById('close').addEventListener('click', () => document.getElementById('options').setAttribute('style', 'display: none'))

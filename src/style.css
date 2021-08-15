@@ -12,8 +12,31 @@ body {
   z-index: 99999999999999;
   width: 100%;
   background: black;
-  bottom: 0;
+  top: 20px;
+  left: 20px;
+  width: 33%;
+  max-width: 500px;
   padding: 20px;
   color: white;
   opacity: 0.8;
+  min-height: 200px;
+}
+
+#options,
+#options div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#options span {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
 }
