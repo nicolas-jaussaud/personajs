@@ -62,7 +62,7 @@ class World {
       z: [-(this.squareSize / 2), this.squareSize / 2]
     }, true)
 
-    // Check if we load more tree according to user position 
+    // Check if we need to load more square according to user position 
 
     setInterval(() => this.shouldLoadSquare(), 500)
     
@@ -112,7 +112,7 @@ class World {
     
     this.createSquareFloor(coordinates)
 
-    // First square has to be empty + init square around
+    // First square has to be empty + init cars
     if( firstSquare ) {
       this.loadCar(() => {
         for (let i = 0; i < this.initialCarNumber; i++) this.addCar(coordinates)
@@ -181,8 +181,8 @@ class World {
     for (let i = 0; i < this.squareVisibility; i++) {
 
       const squareDistance = this.squareSize * (i + 1)
-      console.log(squareDistance)
-      // Whataever the distance is, we want top load middle square and angle on each side 
+
+      // Whataever the distance is, we want to load middle square and angle on each side 
       
       // Angles and middle with lower X position 
       this.loadSquareMap({
@@ -229,7 +229,6 @@ class World {
       for (let k = 0; k < this.squareVisibility; k++) {
 
         const currentDistance = this.squareSize * (k + 1)
-        console.log(currentDistance)
         
         // Between angles and middle, lower X position 
         this.loadSquareMap({
