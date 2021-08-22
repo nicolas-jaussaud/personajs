@@ -27,11 +27,14 @@ class World {
     this.squareSize = 60
     this.roadSize = 30
     this.threesPerSquare = 10
+    this.squareVisibility = 2
 
     this.carNumber = 0
-    this.maxCarNumber = 2
+    this.initialCarNumber = 5
+    this.maxCarNumber = 20
 
     this.init()
+
   }
 
   async init() {
@@ -53,14 +56,17 @@ class World {
 
   initSquares() { 
 
-    // Initial user square
+    // First square
     this.loadSquareMap({
       x: [-(this.squareSize / 2), this.squareSize / 2],
       z: [-(this.squareSize / 2), this.squareSize / 2]
     }, true)
 
-    // Check if we load more tree according to user position
+    // Check if we load more tree according to user position 
+
     setInterval(() => this.shouldLoadSquare(), 500)
+    
+    setInterval(() => this.shouldLoadCar(), 500)
   }
 
   /**
@@ -106,8 +112,13 @@ class World {
     
     this.createSquareFloor(coordinates)
 
-    // First square has to be empty
-    if( firstSquare ) return;
+    // First square has to be empty + init square around
+    if( firstSquare ) {
+      this.loadCar(() => {
+        for (let i = 0; i < this.initialCarNumber; i++) this.addCar(coordinates)
+      })
+      return;
+    }
 
     const randomSquareType = Math.floor(Math.random() * 6) + 1
 
@@ -126,8 +137,6 @@ class World {
       default: this.loadBuildingsFile(() => this.addRandomBuilding(coordinates))
     }
 
-    this.loadCar(() => this.addCar(coordinates))
-
     console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
   }
 
@@ -136,7 +145,7 @@ class World {
     const square = this.getSquare(x, z)
 
     const loadedKey = square.lowX + '-' + square.upX + '-' + square.lowZ + '-' + square.upZ
-    
+
     return this.loadedSquare[ loadedKey ] ? true : false
   }
 
@@ -165,47 +174,137 @@ class World {
     console.info('Current square is: ' + square.lowX + ' ' + square.upX + ' ' + square.lowZ + ' ' + square.upZ)
 
     /**
-     * Make the 8 square around current one are loaded
+     * Load square arround current one in every direction, according to squareVisibility attribute
      */
 
-    // 3 squares with lower X position 
-    this.loadSquareMap({
-      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
-      z: [square.lowZ, square.upZ],
-    })
-    this.loadSquareMap({
-      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
-      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
-    })
-    this.loadSquareMap({
-      x: [square.lowX - this.squareSize, square.upX - this.squareSize],
-      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
-    })
     
-    // 2 squares with same X position 
-    this.loadSquareMap({
-      x: [square.lowX, square.upX],
-      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
-    })
-    this.loadSquareMap({
-      x: [square.lowX, square.upX],
-      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
-    })
+    for (let i = 0; i < this.squareVisibility; i++) {
+
+      const squareDistance = this.squareSize * (i + 1)
+      console.log(squareDistance)
+      // Whataever the distance is, we want top load middle square and angle on each side 
+      
+      // Angles and middle with lower X position 
+      this.loadSquareMap({
+        x: [square.lowX - squareDistance, square.upX - squareDistance],
+        z: [square.lowZ, square.upZ],
+      })
+      this.loadSquareMap({
+        x: [square.lowX - squareDistance, square.upX - squareDistance],
+        z: [square.lowZ + squareDistance, square.upZ + squareDistance],
+      })
+      this.loadSquareMap({
+        x: [square.lowX - squareDistance, square.upX - squareDistance],
+        z: [square.lowZ - squareDistance, square.upZ - squareDistance],
+      })
+      
+      // Middles with same X position but lower and higer Z 
+      this.loadSquareMap({
+        x: [square.lowX, square.upX],
+        z: [square.lowZ + squareDistance, square.upZ + squareDistance],
+      })
+      this.loadSquareMap({
+        x: [square.lowX, square.upX],
+        z: [square.lowZ - squareDistance, square.upZ - squareDistance],
+      })
+      
+      // Angles and middle with upper X position 
+      this.loadSquareMap({
+        x: [square.lowX + squareDistance, square.upX + squareDistance],
+        z: [square.lowZ, square.upZ],
+      })
+      this.loadSquareMap({
+        x: [square.lowX + squareDistance, square.upX + squareDistance],
+        z: [square.lowZ + squareDistance, square.upZ + squareDistance],
+      })
+      this.loadSquareMap({
+        x: [square.lowX + squareDistance, square.upX + squareDistance],
+        z: [square.lowZ - squareDistance, square.upZ - squareDistance],
+      })
+
+      // Then, we load missing squares between middle and angles, expect if squareDistance is 1 because everything is already loaded
+
+      if(i === 0) continue;
+
+      for (let k = 0; k < this.squareVisibility; k++) {
+
+        const currentDistance = this.squareSize * (k + 1)
+        console.log(currentDistance)
+        
+        // Between angles and middle, lower X position 
+        this.loadSquareMap({
+          x: [square.lowX - squareDistance, square.upX - squareDistance],
+          z: [square.lowZ + currentDistance, square.upZ + currentDistance],
+        })
+
+        this.loadSquareMap({
+          x: [square.lowX - squareDistance, square.upX - squareDistance],
+          z: [square.lowZ - currentDistance, square.upZ - currentDistance],
+        })
+
+        // Between angles and middle, higher X position
+        this.loadSquareMap({
+          x: [square.lowX + squareDistance, square.upX + squareDistance],
+          z: [square.lowZ + currentDistance, square.upZ + currentDistance],
+        })
+
+        this.loadSquareMap({
+          x: [square.lowX + squareDistance, square.upX + squareDistance],
+          z: [square.lowZ - currentDistance, square.upZ - currentDistance],
+        })
+
+        // Between angles and middle, lower Z position
+        this.loadSquareMap({
+          x: [square.lowX - currentDistance, square.upX - currentDistance],
+          z: [square.lowZ - squareDistance, square.upZ - squareDistance],
+        })
+        
+        this.loadSquareMap({
+          x: [square.lowX + currentDistance, square.upX + currentDistance],
+          z: [square.lowZ - squareDistance, square.upZ - squareDistance],
+        })
+
+        // Between angles and middle, higher Z position
+        this.loadSquareMap({
+          x: [square.lowX - currentDistance, square.upX - currentDistance],
+          z: [square.lowZ + squareDistance, square.upZ + squareDistance],
+        })
+        
+        this.loadSquareMap({
+          x: [square.lowX + currentDistance, square.upX + currentDistance],
+          z: [square.lowZ + squareDistance, square.upZ + squareDistance],
+        })
+      }
+
     
-    // 3 squares with upper X position 
-    this.loadSquareMap({
-      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
-      z: [square.lowZ, square.upZ],
-    })
-    this.loadSquareMap({
-      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
-      z: [square.lowZ + this.squareSize, square.upZ + this.squareSize],
-    })
-    this.loadSquareMap({
-      x: [square.lowX + this.squareSize, square.upX + this.squareSize],
-      z: [square.lowZ - this.squareSize, square.upZ - this.squareSize],
-    })
+    }
     
+  }
+
+  shouldLoadCar() {
+
+    const currentX = this.character !== false ? this.character.object.position.x : 0
+    const currentZ = this.character !== false ? this.character.object.position.z : 0
+    
+    if( this.squareExists(currentX, currentZ) === false ) return;
+
+    const square = this.getSquare(currentX, currentZ)
+
+    this.loadCar(() => 
+      this.addCar({
+        
+        // Randomly put the car arround the user (but not on direct square around so that he can't see spawn)
+
+        x: Math.floor(Math.random() * 2) + 1 === 2
+          ? [square.lowX + (this.squareSize * 2), square.upX + (this.squareSize * 2)] 
+          : [square.lowX - (this.squareSize * 2), square.upX - (this.squareSize * 2)],
+
+        z: Math.floor(Math.random() * 2) + 1 === 2
+          ? [square.lowZ + (this.squareSize * 2), square.upZ + (this.squareSize * 2)] 
+          : [square.lowZ - (this.squareSize * 2), square.upZ -(this.squareSize * 2)]
+      })
+    )
+  
   }
 
   /**
@@ -270,9 +369,7 @@ class World {
   }
 
   loadCar(callback) {
-    this.mtl('car/Low_Poly_Sportcar.mtl', texture => {
-      this.obj('car/Low_Poly_Sportcar.obj', car => callback(car))
-    })
+    this.fbx('car/Car.fbx', car => callback(car))
   }
 
   /**
@@ -286,42 +383,41 @@ class World {
     this.carNumber = this.carNumber + 1
 
     // No need to clone because always same car
-    const fileName = 'car/Low_Poly_Sportcar.obj'
-    const car = this.loadedObject[ fileName ]
-
-    car.scale.set(0.01, 0.01, 0.01)
+    const fileName = 'car/Car.fbx'
+    const car = this.loadedObject[ fileName ].clone()
+    
+    car.scale.set(0.012, 0.012, 0.012)
     
     // Chose a direction so that the care we come to the user
     car.direction = Math.floor(Math.random() * 4) + 1
-    car.position.y = 0.9
 
     console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
 
     switch(car.direction) {
 
       case 1:
-        car.rotation.y = 0
+        car.rotation.y = Math.PI / 2
 
         car.position.x = coordinates.x[0]
         car.position.z = coordinates.z[0] + 4.5
         break;
 
       case 2:
-        car.rotation.y = Math.PI
+        car.rotation.y = -Math.PI / 2
 
         car.position.x = coordinates.x[1]
         car.position.z = coordinates.z[1] - 4.5
         break;
 
       case 3:
-        car.rotation.y = -Math.PI / 2
+        car.rotation.y = 0
 
         car.position.x = coordinates.x[0] - 4.5
         car.position.z = coordinates.z[0] 
         break;
 
       case 4:
-        car.rotation.y = Math.PI / 2
+        car.rotation.y = -Math.PI
 
         car.position.x = coordinates.x[1] + 4.5
         car.position.z = coordinates.z[1] 
@@ -331,12 +427,12 @@ class World {
     this.scene.add(car)
 
     const carMovement = setInterval(() => {
-      
+
       switch(car.direction) {
-        case 1: car.position.x = car.position.x + 1; break;
-        case 2: car.position.x = car.position.x - 1; break;
-        case 3: car.position.z = car.position.z + 1; break;
-        case 4: car.position.z = car.position.z - 1; break;
+        case 1: car.position.x = car.position.x + 0.5; break;
+        case 2: car.position.x = car.position.x - 0.5; break;
+        case 3: car.position.z = car.position.z + 0.5; break;
+        case 4: car.position.z = car.position.z - 0.5; break;
       }
 
       const characterVector = new THREE.Vector3( 
@@ -363,7 +459,7 @@ class World {
         console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
       }
 
-    }, 30)
+    }, 20)
 
   }
 

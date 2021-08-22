@@ -11,8 +11,10 @@ const init = () => {
 
   app.renderer = new THREE.WebGLRenderer()
   app.renderer.setSize(window.innerWidth, window.innerHeight)
+  
   app.renderer.gammaOutput = true
-
+  app.renderer.antialias = true
+  
   app.scene   = new THREE.Scene()
   app.camera  = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 1000)
   app.clock   = new THREE.Clock()
