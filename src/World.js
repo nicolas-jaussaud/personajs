@@ -31,7 +31,7 @@ class World {
 
     this.carNumber = 0
     this.initialCarNumber = 5
-    this.maxCarNumber = 20
+    this.maxCarNumber = 7
 
     this.init()
 
@@ -222,7 +222,7 @@ class World {
         z: [square.lowZ - squareDistance, square.upZ - squareDistance],
       })
 
-      // Then, we load missing squares between middle and angles, expect if squareDistance is 1 because everything is already loaded
+      // Then, we load missing squares between middle and angles, unless squareDistance is 1 because everything is already loaded
 
       if(i === 0) continue;
 
@@ -300,7 +300,7 @@ class World {
 
         z: Math.floor(Math.random() * 2) + 1 === 2
           ? [square.lowZ + (this.squareSize * 2), square.upZ + (this.squareSize * 2)] 
-          : [square.lowZ - (this.squareSize * 2), square.upZ -(this.squareSize * 2)]
+          : [square.lowZ - (this.squareSize * 2), square.upZ - (this.squareSize * 2)]
       })
     )
   
@@ -381,85 +381,51 @@ class World {
 
     this.carNumber = this.carNumber + 1
 
-    // No need to clone because always same car
     const fileName = 'car/Car.fbx'
     const car = this.loadedObject[ fileName ].clone()
-    
     car.scale.set(0.012, 0.012, 0.012)
-    
-    // Chose a direction so that the care we come to the user
-    car.direction = Math.floor(Math.random() * 4) + 1
-
-    console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
-
-    switch(car.direction) {
-
-      case 1:
-        car.rotation.y = Math.PI / 2
-
-        car.position.x = coordinates.x[0]
-        car.position.z = coordinates.z[0] + 4.5
-        break;
-
-      case 2:
-        car.rotation.y = -Math.PI / 2
-
-        car.position.x = coordinates.x[1]
-        car.position.z = coordinates.z[1] - 4.5
-        break;
-
-      case 3:
-        car.rotation.y = 0
-
-        car.position.x = coordinates.x[0] - 4.5
-        car.position.z = coordinates.z[0] 
-        break;
-
-      case 4:
-        car.rotation.y = -Math.PI
-
-        car.position.x = coordinates.x[1] + 4.5
-        car.position.z = coordinates.z[1] 
-        break;
-    }
 
     this.scene.add(car)
 
-    const carMovement = setInterval(() => {
+    const carController = new Car({
+      object:       car,
+      squareSize:   this.squareSize,
+      coordinates:  coordinates,
+      moveCallback: car => {
 
-      switch(car.direction) {
-        case 1: car.position.x = car.position.x + 0.5; break;
-        case 2: car.position.x = car.position.x - 0.5; break;
-        case 3: car.position.z = car.position.z + 0.5; break;
-        case 4: car.position.z = car.position.z - 0.5; break;
-      }
-
-      const characterVector = new THREE.Vector3( 
-        this.character.object.position.x,
-        this.character.object.position.y,  
-        this.character.object.position.z 
-      )
-
-      const carVector = new THREE.Vector3(
-        car.position.x, 
-        car.position.y, 
-        car.position.z
-      )
-
-      // If car is far or if it reach a non generated square
-      if( carVector.distanceTo(characterVector) > 200 || !this.squareExists(car.position.x, car.position.z)) {
-
-        clearInterval(carMovement)
+        const characterVector = new THREE.Vector3( 
+          this.character.object.position.x,
+          this.character.object.position.y, 
+          this.character.object.position.z 
+        )
         
-        this.scene.remove(car)
+        const position = car.config.object.position
 
-        this.carNumber = this.carNumber - 1
+        const carVector = new THREE.Vector3(
+          position.x, 
+          position.y, 
+          position.z
+        )
 
-        console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
+        // If car is far or if it reach a non generated square
+        if( carVector.distanceTo(characterVector) > 200 || !this.squareExists(position.x, position.z)) {
+
+          clearInterval(moveInterval)
+
+          this.scene.remove(car.config.object)
+
+          this.carNumber = this.carNumber - 1
+
+          console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
+        }
+
       }
+      
+    })
+    
+    const moveInterval = setInterval(() => carController.move(0.5), 20)
 
-    }, 20)
-
+    console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
   }
 
   setRandomPosition(object, coordinates) {
