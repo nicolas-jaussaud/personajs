@@ -157,7 +157,7 @@ export default class Character {
   }
 
   initAudio() {
-
+    
     this.footstep = getSong('footsteps')
     
     this.footstep.loop = true

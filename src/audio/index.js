@@ -1,13 +1,17 @@
-const audioFolder = '../audio/'
+const audioFolder = './audio/'
 const songs =[]
 
 export const init = () => randomlyStartSong()
 
-export const getSong = name => (
-  songs[ name ] 
-    ? songs[ name ]
-    : songs[ name ] = new Audio(audioFolder + name + '.mp3')
-)
+export const getSong = name => {
+  
+  if( songs[ name ] ) return songs[ name ]
+
+  const audio = new Audio(audioFolder + name + '.mp3') 
+  audio.type = 'audio/mp3'
+
+  return songs[ name ] = audio 
+}
 
 /**
  * Every 10 seconds, one chance out of five to start the song
@@ -15,7 +19,7 @@ export const getSong = name => (
 const randomlyStartSong = () => {
   
   const maybeStartSong = setInterval(() => {
-    console.log(songs)
+
     const random = Math.floor(Math.random() * 5)
     if( random !== 3 ) return;
 
