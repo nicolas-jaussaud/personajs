@@ -6,7 +6,8 @@ See [example](https://nicolasjaussaud.me/examples/character-controls)
 
 ## Installation
 - `npm install`
-- `npm run start`
+- `npm run dev`
+- `npm run build`
 
 ## Sources
 Free 3D ressources:

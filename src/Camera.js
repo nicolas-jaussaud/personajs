@@ -1,8 +1,8 @@
-class Camera {
+import { app } from './app'
+export default class Camera {
 
-  constructor(camera, character) {
+  constructor(character) {
       
-    this.camera = camera
     this.character = character
 
     // Distance from the character
@@ -77,18 +77,18 @@ class Camera {
     rotX = Math.sin( (Math.PI / 2) + this.rotation )
     
     // We don't move or rotate on y while jumping
-    this.camera.position.y = this.character.isJumping() 
+    app.camera.position.y = this.character.isJumping() 
       ? this.character.initialJumpPosition  + this.height 
       : this.character.object.position.y + this.height
     
-    this.camera.position.x = this.character.object.position.x - this.distance * rotZ
-    this.camera.position.z = this.character.object.position.z - this.distance * rotX
+    app.camera.position.x = this.character.object.position.x - this.distance * rotZ
+    app.camera.position.z = this.character.object.position.z - this.distance * rotX
   
     // Ajust rotation to be behind
     this.character.object.rotation.y = - this.rotation
 
     // A little above the character
-    this.camera.lookAt(new THREE.Vector3(
+    app.camera.lookAt(new THREE.Vector3(
       this.character.object.position.x,
       this.character.isJumping() ? this.character.initialJumpPosition + 3 : this.character.object.position.y + 3,
       this.character.object.position.z,

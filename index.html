@@ -4,45 +4,25 @@
   <head>
     <title>Character controls</title>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./build/app.min.css" />
       
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js" integrity="sha512-NLtnLBS9Q2w7GKK9rKxdtgL7rA7CAS85uC/0xd9im4J/yOL4F9ZVlv634NAM7run8hz3wI2GabaA6vv8vJtHiQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./lib/FBXLoader.js"></script>
     <script src="./lib/OBJLoader.js"></script>
     <script src="./lib/MTLLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fflate@0.6.10/umd/index.min.js"></script>
-      
-    <script src="src/World.js"></script>    
-    <script src="src/Character.js"></script>    
-    <script src="src/Camera.js"></script>
-    <script src="src/Car.js"></script>
+
+    <script src="./build/app.min.js"></script>
   </head>
 
   <body>
+
+    <!-- Three.js canevas -->
     <div id="app"></div>  
 
-    <div id="options">
-      <span id="close">x</span>
-      <div>
-        <span>Keyboard:</span>
-        <select id='keyboard'>
-          <option value="azerty">Azerty</option>
-          <option value="qwerty">Qwerty</option>
-        </select>
-      </div>
-      <div id="qwerty">
-        <span>Use WASD (or the arrows) to move the character</span> 
-        <span>Use QE (or  ⇓ ⇑) to rotate the camera</span> 
-        <span>Use the spacebar to jump</span> 
-      </div>
-      <div id="azerty">
-        <span>Use ZQSD (or the arrows) to move the character</span> 
-        <span>Use AE (or  ⇓ ⇑) to rotate the camera</span> 
-        <span>Use the spacebar to jump</span> 
-      </div> 
-    </div>
-
-    <script src="src/index.js"></script>
+    <!-- React container for hud -->
+    <div id="interface"></div>
+    
   </body>
 
 </html>

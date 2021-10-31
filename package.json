@@ -4,11 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -a localhost -p 8888"
+    "dev": "roll dev",
+    "build": "roll build"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-server": "^0.12.3"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@tangible/roller": "^1.2.1"
   }
 }

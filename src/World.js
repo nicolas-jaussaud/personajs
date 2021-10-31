@@ -1,6 +1,11 @@
-class World {
+import Camera from './Camera'
+import Car from './Car'
+import Character from './Character'
 
-  constructor(app) {
+import { app } from './app'
+export default class World {
+
+  constructor() {
 
     this.loader =  {
       fbx: new THREE.FBXLoader(),
@@ -9,12 +14,7 @@ class World {
     }
 
     this.objectPath = './objects/'
-    
-    this.scene  = app.scene
-    this.el     = app.el
-    this.camera = app.camera
-    this.clock  = app.clock
-    
+
     // False until loaded
     this.character          = false
     this.characterCamera    = false
@@ -41,12 +41,12 @@ class World {
       
     this.fbx('character.fbx', (character) => {
       
-      this.character = new Character(character, this.scene)
+      this.character = new Character(character)
       character.scale.set(0.002,0.002,0.002)
       
-      this.scene.add(character)
+      app.scene.add(character)
       
-      this.characterCamera = new Camera(this.camera, this.character)
+      this.characterCamera = new Camera(this.character)
     })
 
     this.initSquares()
@@ -97,8 +97,8 @@ class World {
     mesh.position.y = 0 + (zIndex / 100)
 
     mesh.rotation.x = - Math.PI / 2
-
-    this.scene.add(mesh)
+    
+    app.scene.add(mesh)
   }
 
   loadSquareMap(coordinates, firstSquare =  false) {
@@ -385,7 +385,7 @@ class World {
     const car = this.loadedObject[ fileName ].clone()
     car.scale.set(0.012, 0.012, 0.012)
 
-    this.scene.add(car)
+    app.scene.add(car)
 
     const carController = new Car({
       object:       car,
@@ -412,7 +412,7 @@ class World {
 
           clearInterval(moveInterval)
 
-          this.scene.remove(car.config.object)
+          app.scene.remove(car.config.object)
 
           this.carNumber = this.carNumber - 1
 
@@ -430,7 +430,7 @@ class World {
 
   setRandomPosition(object, coordinates) {
     
-    this.scene.add(object)
+    app.scene.add(object)
 
     // We don't wan to add anything on the road
     const innerSquare = {
@@ -457,19 +457,19 @@ class World {
     const isCollision = this.isCollision(object)
 
     isCollision
-      ? this.scene.remove(object.name)
+      ? app.scene.remove(object.name)
       : this.worldObjects.push(object)
 
     // Check if collision with character (should find a better way to do this)
     if( this.isCollision(this.character.object) ) {
-      this.scene.remove(object.name)
+      app.scene.remove(object.name)
       this.worldObjects.pop(object)
     }
   }
 
   setCenterPosition(object, coordinates) {
 
-    this.scene.add(object)
+    app.scene.add(object)
 
     object.position.x = coordinates.x[1] - (this.squareSize / 2) 
     object.position.z = coordinates.z[1] - (this.squareSize / 2) 
@@ -481,7 +481,7 @@ class World {
   render() {
 
     if(this.character && this.characterCamera) {
-      this.character.render(this.clock)
+      this.character.render(app.clock)
       this.characterCamera.render()    
     }
 
@@ -514,11 +514,11 @@ class World {
     sideLight.position.set(-7000000, 10000000, 100)
     sideLight.rotation.x = 0
 
-    this.scene.add(hemiLight)
-    this.scene.add(sideLight)
+    app.scene.add(hemiLight)
+    app.scene.add(sideLight)
   }
 
-  sky = () => this.scene.background = new THREE.Color( 0x55BBFF )
+  sky = () => app.scene.background = new THREE.Color( 0x55BBFF )
 
   fbx = async (name, callback = false) => {
 

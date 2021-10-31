@@ -1,10 +1,9 @@
-class Character {
+import { app } from './app'
+export default class Character {
 
-  constructor(object, scene) {
+  constructor(object) {
       
     this.object = object
-    this.scene = scene
-    this.world = window.app.world
 
     this.speed = 0.5
 
@@ -139,7 +138,7 @@ class Character {
      * 
      * @see https://stackoverflow.com/a/44938186/10491705
      */
-    if( this.world.isCollision(this.object) ) {
+    if( app.world.isCollision(this.object) ) {
 
       // If we jump, we want to keep Y to move
       this.object.position.set(
