@@ -17,3 +17,6 @@ Free 3D ressources:
 - [Low Poly Car](https://free3d.com/3d-model/low-poly-car-40967.html) created by [WufuDufu](https://free3d.com/user/wufudufu)
 
 Character animations from [Mixamo](https://www.mixamo.com)
+
+Sounds:
+- [Footsteps](https://www.soundjay.com/footsteps/sounds/footsteps-4.mp3) (modified)

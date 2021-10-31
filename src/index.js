@@ -1,7 +1,8 @@
-import World from './World'
+import World from './classes/World'
 
 import { app } from './app'
 import { init as initInterface } from './interface/index.jsx'
+import { init as initAudio } from './audio/index.js'
 
 const d = document
 
@@ -10,6 +11,8 @@ window.onload = () => {
   init() 
 
   initInterface()
+
+  initAudio()
 
   render(app.world)
 }
