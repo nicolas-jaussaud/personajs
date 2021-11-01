@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { app } from '../../app'
+import { app } from '../../core/app'
 
 const Controls = () => {
 

@@ -8,19 +8,10 @@ export default class World {
 
   constructor() {
 
-    this.loader =  {
-      fbx: new THREE.FBXLoader(),
-      mtl: new THREE.MTLLoader(),
-      obj: new THREE.OBJLoader(),
-    }
-
-    this.objectPath = './objects/'
-
     // False until loaded
     this.character          = false
     this.characterCamera    = false
     
-    this.loadedObject = {}
     this.worldObjects = []
     
     // Needed to load dynamically
@@ -39,8 +30,8 @@ export default class World {
   }
 
   async init() {
-      
-    this.fbx('character.fbx', (character) => {
+    
+    app.load('character.fbx', character => {
       
       this.character = new Character(character)
       character.scale.set(0.002,0.002,0.002)
@@ -48,6 +39,7 @@ export default class World {
       app.scene.add(character)
       
       this.characterCamera = new Camera(this.character)
+      
     })
 
     this.initSquares()
@@ -319,7 +311,7 @@ export default class World {
       
       const fileName = 'trees/forest' + (i + 1) + '.fbx'
       
-      this.fbx(fileName, (object) => {
+      app.load(fileName, object => {
         loaded.push(object)
         loaded.length === fileNumber ? callback() : null
       })
@@ -334,8 +326,8 @@ export default class World {
     const loaded = []
     const fileName = 'buildings/buildings.fbx'
       
-    this.fbx(fileName, (object) => {
-      loaded.push(object)
+    app.load(fileName, object => {
+      loaded.push(object) 
       callback()
     })
   }
@@ -348,7 +340,7 @@ export default class World {
     const treeNumber = Math.random() * (8 - 1) + 1
     const fileName = 'trees/forest' + (parseInt(treeNumber) + 1) + '.fbx'
     
-    const tree = this.loadedObject[ fileName ].clone()
+    const tree = app.objects[ fileName ].clone()
     
     tree.scale.set(0.004,0.004,0.004)
     
@@ -358,7 +350,7 @@ export default class World {
   addRandomBuilding(coordinates) {
     
     const fileName = 'buildings/buildings.fbx'
-    const buildings = this.loadedObject[ fileName ].clone()
+    const buildings = app.objects[ fileName ].clone()
 
     const buildingNumber = Math.random() * (buildings.children.length - 1) + 1
     const building = buildings.children[ parseInt(buildingNumber) ] 
@@ -368,9 +360,7 @@ export default class World {
     this.setCenterPosition(building, coordinates)   
   }
 
-  loadCar(callback) {
-    this.fbx('car/Car.fbx', car => callback(car))
-  }
+  loadCar = callback => app.load('car/Car.fbx', car => callback(car))
 
   /**
    * TODO: Handle car in separte file 
@@ -383,7 +373,7 @@ export default class World {
     this.carNumber = this.carNumber + 1
 
     const fileName = 'car/Car.fbx'
-    const car = this.loadedObject[ fileName ].clone()
+    const car = app.objects[ fileName ].clone()
     car.scale.set(0.012, 0.012, 0.012)
 
     app.scene.add(car)
@@ -520,64 +510,5 @@ export default class World {
   }
 
   sky = () => app.scene.background = new THREE.Color( 0x55BBFF )
-
-  fbx = async (name, callback = false) => {
-
-    // Already loaded
-    if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
-    
-    return this.loader.fbx.load(this.objectPath + name,
-      (fbx) => {
-        
-        this.loadedObject[ name ] = fbx
-
-        fbx.castShadow    = true
-        fbx.receiveShadow = true
-        
-        if(callback) callback(fbx)
-      },
-      (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-      (error) => console.log('An error happened')
-    )
-  }
-
-  obj = async (name, callback = false, texture = false) => {
-    
-    if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
-  
-    return this.loader.obj.load(this.objectPath + name, obj => {
-      
-        this.loadedObject[ name ] = obj
-
-        obj.castShadow    = true
-        obj.receiveShadow = true
-        
-        if(callback) callback(obj)
-      },
-      (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-      (error) => console.log('An error happened')
-    )    
-  }
-
-  mtl = async (name, callback = false) => {
-
-    if(this.loadedObject[ name ]) return callback ? callback(this.loadedObject[ name ]) : null
-
-    return this.loader.mtl.load(this.objectPath + name, mtl => {
-      
-        mtl.preload()
-        this.loader.obj.setMaterials( mtl )
-        
-        this.loadedObject[ name ] = mtl
-
-        mtl.castShadow    = true
-        mtl.receiveShadow = true
-
-        if(callback) callback(mtl)
-      },
-      (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-      (error) => console.log('An error happened')
-    )
-  }
 
 }

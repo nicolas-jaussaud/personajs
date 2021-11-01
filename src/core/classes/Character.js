@@ -1,5 +1,5 @@
 import { app } from '../app'
-import { getSong } from '../audio/index.js'
+import { getSong } from '../../audio/index.js'
 
 export default class Character {
 
@@ -7,7 +7,7 @@ export default class Character {
       
     this.object = object
 
-    this.speed = 0.5
+    this.speed = 0.3
 
     this.jumpHeight = 2
     this.jumpMaxSpeed = 1
