@@ -1,10 +1,10 @@
 const About = () => (
   <>
     <p>
-      Attempt to create an an infinite generated world in three.js.
+      Attempt to create an an infinite generated world in three.js
     </p>
     <p>
-      All the Code is aivailable on my <a href="https://github.com/nicolas-jaussaud/personajs">github</a>. 
+      All the Code is aivailable on my <a href="https://github.com/nicolas-jaussaud/personajs">github</a>
     </p>
     <p>
       <strong>3D ressources:</strong>
@@ -16,7 +16,7 @@ const About = () => (
         <li><a href="https://free3d.com/3d-model/low-poly-car-40967.html">Low Poly Car</a> created by <a href="https://free3d.com/user/wufudufu">WufuDufu</a></li>
       </ul>
     <p>
-      Character animations from <a href="https://www.mixamo.com">Mixamo</a>.
+      Character animations from <a href="https://www.mixamo.com">Mixamo</a>
     </p>
     <p>
       <strong>Sounds:</strong>
