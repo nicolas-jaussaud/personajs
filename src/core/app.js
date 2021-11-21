@@ -7,5 +7,10 @@ export const app = {
   camera:   null,
   keyboard: 'qwerty',
   world:    null,
-  init:     init
+  init:     init,
+  playableCharacter: {
+    character:       false,
+    characterCamera: false
+  },
+  squareLoaderReady: false // Should think of a hook system
 }

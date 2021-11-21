@@ -7,10 +7,10 @@ export default class Character {
       
     this.object = object
 
-    this.speed = 0.3
+    this.speed = 0.25
 
     this.jumpHeight = 2
-    this.jumpMaxSpeed = 1
+    this.jumpMaxSpeed = 0.8
     this.jumpSpeed = this.jumpMaxSpeed
     this.initialJumpPosition = false
 

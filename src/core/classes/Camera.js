@@ -11,7 +11,7 @@ export default class Camera {
     this.height = 3.5
 
     // Rotation speed
-    this.speed = 20
+    this.speed = 10
     this.rotation = 0
 
     this.directions = {
