@@ -1,4 +1,5 @@
 #interface {
+  position: relative;
  
   .interface-container {
     position: fixed;
@@ -55,4 +56,25 @@
     justify-content: space-between;
     padding-bottom: 1rem;
   }
+
+  .interface-content-map {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+
+    .interface-map {
+      position: 'relative';
+      border: 1px white solid;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .interface-map-square {
+      background: #55FF66;
+      position: absolute; 
+      outline: 5px #555555 solid;
+      outline-offset: -5px;
+    }
+
+  }
+
 }

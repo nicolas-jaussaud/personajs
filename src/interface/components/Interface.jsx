@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import Controls from './Controls'
 import About from './About'
+import Map from './Map'
 
 const Interface = () => {
 
@@ -29,6 +30,10 @@ const Interface = () => {
           </div>
         </div>
         : ''}
+
+        <div className='interface-content-map'>
+          <Map width={ 200 } height={ 200 } />
+        </div>
     </div>
   )
 }

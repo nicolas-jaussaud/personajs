@@ -12,5 +12,7 @@ export const app = {
     character:       false,
     characterCamera: false
   },
-  squareLoaderReady: false // Should think of a hook system
+  squareLoaderReady: false, // Should think of a hook system
+  newSquareLoaded: false, // Should also think of a hook system
+  loadedSquare: []
 }

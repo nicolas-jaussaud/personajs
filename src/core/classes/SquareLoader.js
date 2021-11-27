@@ -4,9 +4,9 @@ export default class SquareLoader {
 
   constructor() {
 
-    this.loadedSquare = []
     this.squareSize = 60
     this.squareVisibility = 2
+    this.loadedSquare = []
 
     this.firstSquareType = false
     this.squareTypes = {}
@@ -42,9 +42,22 @@ export default class SquareLoader {
     this.refreshPriorityKeys()
   } 
 
-  loadSquareType = (name, coordinates) => this.squareTypes[ name ] 
-    ? this.squareTypes[ name ].callback( coordinates ) 
-    : false
+  loadSquareType = (name, loadedKey, coordinates) => {
+    
+    this.loadedSquare[ loadedKey ] = {
+      type: name,
+      position: {
+        x: [ coordinates.x[0], coordinates.x[1] ],
+        y: [ coordinates.z[0], coordinates.z[1] ]
+      }
+    }
+
+    if( app.newSquareLoaded ) app.newSquareLoaded(this.loadedSquare[ loadedKey ])
+
+    return this.squareTypes[ name ] 
+      ? this.squareTypes[ name ].callback( coordinates ) 
+      : false
+  }
 
   /**
    * Array that will allow us to quicly get square according to priority
@@ -68,19 +81,17 @@ export default class SquareLoader {
     const loadedKey = coordinates.x[0] + '-' + coordinates.x[1] + '-' + coordinates.z[0] + '-' + coordinates.z[1]
     
     if( this.loadedSquare[ loadedKey ] ) return;
-
-    this.loadedSquare[ loadedKey ] = true
     
     // First square has to be empty + init cars
     if( firstSquare && this.firstSquareType ) {
-      this.loadSquareType(this.firstSquareType, coordinates)
+      this.loadSquareType(this.firstSquareType, loadedKey, coordinates)
       return;
     } 
 
     const randomIndex = Math.floor(Math.random() * this.priorityKeys.length)
     const randomSquareType = this.priorityKeys[ randomIndex ]
 
-    this.loadSquareType(randomSquareType, coordinates)
+    this.loadSquareType(randomSquareType, loadedKey, coordinates)
 
     console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
   }
