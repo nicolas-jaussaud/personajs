@@ -11,8 +11,8 @@ export const fbx = async (name, callback = false) => (
       
       if(callback) callback(fbx)
     },
-    (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-    (error) => console.log('An error happened')
+    xhr   => app.debug ? console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ) : '',
+    error => app.debug ? console.error('An error happened: ' + error) : ''
   )
 )
 
@@ -27,8 +27,8 @@ export const obj = async (name, callback = false) => (
       
       if(callback) callback(obj)
     },
-    (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-    (error) => console.log('An error happened')
+    xhr   => app.debug ? console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ) : '',
+    error => app.debug ? console.error('An error happened: ' + error) : ''
   )    
 )
 
@@ -46,7 +46,7 @@ export const mtl = async (name, callback = false) => (
 
       if(callback) callback(mtl)
     },
-    (xhr) => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
-    (error) => console.log('An error happened')
+    xhr   => app.debug ? console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ) : '',
+    error => app.debug ? console.error('An error happened: ' + error) : ''
   )
 )

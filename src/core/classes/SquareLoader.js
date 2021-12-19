@@ -93,7 +93,9 @@ export default class SquareLoader {
 
     this.loadSquareType(randomSquareType, loadedKey, coordinates)
 
-    console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
+    if( app.debug ) {
+      console.info('New square loaded: ' + coordinates.x[0] + ' ' + coordinates.x[1] + ' ' + coordinates.z[0] + ' ' + coordinates.z[1])
+    }
   }
 
   squareExists(x, z) {
@@ -119,18 +121,25 @@ export default class SquareLoader {
     return coordinates
   }
 
-  shouldLoadSquare() {
-    
+  getCurrentSquare() {
+
     const character = app.playableCharacter.character
     
     // If character not loaded yet, position will be 0
     const currentX = character !== false ? character.object.position.x : 0
     const currentZ = character !== false ? character.object.position.z : 0
     
-    const square = this.getSquare(currentX, currentZ)
+    return this.getSquare(currentX, currentZ)
+  }
 
-    console.info('Current square is: ' + square.lowX + ' ' + square.upX + ' ' + square.lowZ + ' ' + square.upZ)
+  shouldLoadSquare() {
+    
+    const square = this.getCurrentSquare()
 
+    if( app.debug ) {
+      console.info('Current square is: ' + square.lowX + ' ' + square.upX + ' ' + square.lowZ + ' ' + square.upZ)
+    }
+    
     /**
      * Load square arround current one in every direction, according to squareVisibility attribute
      */

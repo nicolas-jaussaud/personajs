@@ -94,7 +94,9 @@ export default class CarLoader {
 
           this.carNumber = this.carNumber - 1
 
-          console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
+          if( app.debug ) {
+            console.info( 'One car has been removed. Current Car number is: ' + this.carNumber ) 
+          } 
         }
 
       }
@@ -103,6 +105,8 @@ export default class CarLoader {
     
     const moveInterval = setInterval(() => carController.move(0.5), 20)
 
-    console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
+    if( app.debug ) {
+      console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
+    }
   }
 }

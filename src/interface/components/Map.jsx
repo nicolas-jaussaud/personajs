@@ -42,18 +42,25 @@ const Map = ({
   const unitSize = 100 / (mapSize * 2)
   const mapSquareSize = unitSize * squareSize
   
-  console.log(mapSize, unitSize, mapSquareSize)
   return(
     <div className='interface-map' style={{ width: width, height: height }}>
       { squares.map(square => {
 
-        const top = (square.position.y[0] + mapSize) * unitSize
-        const left = (square.position.x[0] + mapSize) * unitSize
+        const top   = (square.position.y[0] + mapSize) * unitSize
+        const left  = (square.position.x[0] + mapSize) * unitSize
+        
+        const currentSquare   = app.world.squareLoader.getCurrentSquare()
+        const isCurrentSquare =  currentSquare.lowZ === square.position.y[0] 
+                              && currentSquare.lowX === square.position.x[0]
+
+        const classNames = isCurrentSquare
+         ? `interface-map-square interface-map-square-${square.type} interface-map-square-current`
+         : `interface-map-square interface-map-square-${square.type}`
 
         return(
           <span 
             key={ square.position.y[0] + '_' + square.position.x[0] } 
-            className='interface-map-square'
+            className={ classNames }
             style={{ 
               width: mapSquareSize + '%', 
               height: mapSquareSize + '%',

@@ -14,5 +14,6 @@ export const app = {
   },
   squareLoaderReady: false, // Should think of a hook system
   newSquareLoaded: false, // Should also think of a hook system
-  loadedSquare: []
+  loadedSquare: [],
+  debug: false
 }

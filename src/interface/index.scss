@@ -73,6 +73,25 @@
       position: absolute; 
       outline: 5px #555555 solid;
       outline-offset: -5px;
+      
+      &:before {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    }
+
+    .interface-map-square-current {
+      outline: 5px red solid;
+    }
+
+    .interface-map-square-buildings:before {
+      content: "\1F3E2";
+    }
+
+    .interface-map-square-park:before {
+      content: "\1F332";
     }
 
   }
