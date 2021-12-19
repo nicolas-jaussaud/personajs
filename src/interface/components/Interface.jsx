@@ -3,10 +3,12 @@ import { useState } from 'react'
 import Controls from './Controls'
 import About from './About'
 import Map from './Map'
+import VisualControls from './VisualControls'
 
 const Interface = () => {
 
   const [section, openSection] = useState(false)
+  const isMobile = 'ontouchstart' in document.documentElement
 
   const toggleSection = sectionName => section !== sectionName 
     ? openSection(sectionName)
@@ -34,6 +36,9 @@ const Interface = () => {
         <div className='interface-content-map'>
           <Map width={ 200 } height={ 200 } />
         </div>
+
+        { isMobile && <VisualControls /> }
+
     </div>
   )
 }

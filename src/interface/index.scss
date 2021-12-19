@@ -59,7 +59,7 @@
 
   .interface-content-map {
     position: absolute;
-    bottom: 2rem;
+    top: 2rem;
     right: 2rem;
 
     .interface-map {
@@ -94,6 +94,35 @@
       content: "\1F332";
     }
 
+  }
+
+  .interface-visual-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    
+    .interface-visual-controls-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      display: flex;
+      height: 7vw;
+    }
+
+    .interface-visual-controls-key {
+      display: flex;
+      cursor: pointer;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      border: solid white 1px; 
+      font-size: 5vw;
+      text-align: center;
+      color: white;
+      background: rgba(0, 0, 0, 0.3);
+    }
   }
 
 }

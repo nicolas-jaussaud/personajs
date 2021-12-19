@@ -27,3 +27,17 @@ export const init = selector => {
   render()
   
 } 
+
+/**
+ * Support window resize
+ * 
+ * @see https://stackoverflow.com/a/20434960
+ */
+window.addEventListener('resize', () => {
+
+  app.camera.aspect = window.innerWidth / window.innerHeight
+  app.camera.updateProjectionMatrix()
+
+  app.renderer.setSize( window.innerWidth, window.innerHeight )
+  
+})
