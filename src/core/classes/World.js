@@ -1,7 +1,8 @@
-import Camera from './Camera'
-import Car from './Car'
-import Character from './Character'
 import SquareLoader from './SquareLoader'
+import CarLoader from './CarLoader'
+
+import Camera from './models/Camera'
+import Character from './models/Character'
 
 import { app } from '../app'
 
@@ -11,11 +12,7 @@ export default class World {
     
     this.worldObjects = []
 
-    // The car logic shoudl be in a separate file at some point
-    this.carNumber = 0
-    this.initialCarNumber = 5
-    this.maxCarNumber = 7
-
+    this.carLoader    = app.carLoader = new CarLoader
     this.squareLoader = app.squareLoader = new SquareLoader
 
     this.init()
@@ -25,6 +22,7 @@ export default class World {
   async init() {
 
     this.squareLoader.init()
+    this.carLoader.init()
     
     app.load('character.fbx', character => {
 
@@ -36,8 +34,6 @@ export default class World {
       app.scene.add(character)      
     })
 
-    setInterval( this.shouldLoadCar.bind(this), 500 )
-
     this.light()
     this.sky()
 
@@ -45,91 +41,6 @@ export default class World {
 
   character = () => (app.playableCharacter.character)
   characterCamera = () => (app.playableCharacter.characterCamera)
-
-  shouldLoadCar() {
-    
-    const currentX = this.character() !== false ? this.character().object.position.x : 0
-    const currentZ = this.character() !== false ? this.character().object.position.z : 0
-    
-    if( this.squareLoader.squareExists(currentX, currentZ) === false ) return;
-
-    const square = this.squareLoader.getSquare(currentX, currentZ)
-
-    this.loadCar(() => 
-      this.addCar({
-        
-        // Randomly put the car arround the user (but not on direct square around so that he can't see spawn)
-
-        x: Math.floor(Math.random() * 2) + 1 === 2
-          ? [square.lowX + (this.squareLoader.squareSize * 2), square.upX + (this.squareLoader.squareSize * 2)] 
-          : [square.lowX - (this.squareLoader.squareSize * 2), square.upX - (this.squareLoader.squareSize * 2)],
-
-        z: Math.floor(Math.random() * 2) + 1 === 2
-          ? [square.lowZ + (this.squareLoader.squareSize * 2), square.upZ + (this.squareLoader.squareSize * 2)] 
-          : [square.lowZ - (this.squareLoader.squareSize * 2), square.upZ - (this.squareLoader.squareSize * 2)]
-      })
-    )
-  
-  }
-
-  loadCar = callback => app.load('car/Car.fbx', car => callback(car))
-
-  /**
-   * TODO: Handle car in separte file 
-   */
-  addCar(coordinates) {
-
-    // Only one car at once to avoid too much objects
-    if( this.carNumber >= this.maxCarNumber ) return;
-
-    this.carNumber = this.carNumber + 1
-
-    const fileName = 'car/Car.fbx'
-    const car = app.objects[ fileName ].clone()
-    car.scale.set(0.012, 0.012, 0.012)
-
-    app.scene.add(car)
-
-    const carController = new Car({
-      object:       car,
-      squareSize:   this.squareLoader.squareSize,
-      coordinates:  coordinates,
-      moveCallback: car => {
-
-        const characterVector = new THREE.Vector3( 
-          this.character().object.position.x,
-          this.character().object.position.y, 
-          this.character().object.position.z 
-        )
-        
-        const position = car.config.object.position
-
-        const carVector = new THREE.Vector3(
-          position.x, 
-          position.y, 
-          position.z
-        )
-
-        // If car is far or if it reach a non generated square
-        if( carVector.distanceTo(characterVector) > 200 || !this.squareLoader.squareExists(position.x, position.z)) {
-
-          clearInterval(moveInterval)
-
-          app.scene.remove(car.config.object)
-
-          this.carNumber = this.carNumber - 1
-
-          console.info( 'One car has been removed. Current Car number is: ' + this.carNumber )
-        }
-
-      }
-      
-    })
-    
-    const moveInterval = setInterval(() => carController.move(0.5), 20)
-
-    console.info( 'One car has been added. Current Car number is: ' + this.carNumber + ', direction is ' + car.direction )
-  }
 
   render() {
 

@@ -1,5 +1,5 @@
-import { app } from '../app'
-import { getSong } from '../../audio/index.js'
+import { app } from '../../app'
+import { getSong } from '../../../audio/index.js'
 
 export default class Character {
 
