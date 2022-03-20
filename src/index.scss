@@ -42,3 +42,15 @@ body {
   top: 10px;
   cursor: pointer;
 }
+
+// Debug
+
+.debug-info {
+  top: calc(100% - 100px) !important;
+  left: calc(100% - 200px) !important;
+
+  canvas {
+    width: 200px !important;
+    height: 100px !important;
+  }
+}
