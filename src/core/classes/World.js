@@ -39,10 +39,17 @@ export default class World {
 
   }
 
+  isReady = () => (this.squareLoader.isReady() && app.playableCharacter.character)
+
   character = () => (app.playableCharacter.character)
   characterCamera = () => (app.playableCharacter.characterCamera)
 
   render() {
+
+    if( app.worldLoaded && this.isReady() ) {
+      app.worldLoaded()
+      app.worldLoaded = false;
+    }
 
     if(this.character() && this.characterCamera()) {
       this.character().render(app.clock)

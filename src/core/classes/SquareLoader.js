@@ -28,6 +28,19 @@ export default class SquareLoader {
     setInterval(() => this.shouldLoadSquare(), 500)
   }
 
+  isReady() {
+    
+    const squareNumber = Object.keys(this.loadedSquare).filter(
+      key => (this.loadedSquare[ key ].loaded === true)
+    ).length
+
+
+    const initialSquareSize = (this.squareVisibility * 2) + 1
+    const initialSquareArea = initialSquareSize * initialSquareSize
+
+    return initialSquareArea <= squareNumber
+  }
+
   /**
    * Register a new square type, a square with lower priority will
    * have less chance to be displayed
@@ -49,14 +62,17 @@ export default class SquareLoader {
       position: {
         x: [ coordinates.x[0], coordinates.x[1] ],
         y: [ coordinates.z[0], coordinates.z[1] ]
-      }
+      },
+      loaded: false
     }
 
     if( app.newSquareLoaded ) app.newSquareLoaded(this.loadedSquare[ loadedKey ])
 
+    const isLoaded = () => this.loadedSquare[ loadedKey ].loaded = true
+
     return this.squareTypes[ name ] 
-      ? this.squareTypes[ name ].callback( coordinates ) 
-      : false
+      ? this.squareTypes[ name ].callback( coordinates, isLoaded ) // Squere types must validate when square is fully loaded
+      : isLoaded()
   }
 
   /**

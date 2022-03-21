@@ -28,7 +28,7 @@ export const init = selector => {
 
   initLoaders()
 
-  app.world = new World()
+  app.world = new World
 
   initControls()
 

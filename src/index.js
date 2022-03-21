@@ -4,10 +4,9 @@ import { render } from './core/render'
 import { init as initInterface } from './interface/index.jsx'
 import { init as initAudio } from './audio/index.js'
 import { init as initSquares } from './squares/index.js'
-import { init as initStats } from './stats.js'
 
 window.onload = () => {
-
+  
   initSquares()
 
   app.init('#app')

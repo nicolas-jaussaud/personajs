@@ -1,11 +1,13 @@
 import { app } from '../core/app'
 import { squareFloor }  from './'
 
-const init = coordinates => {
+const init = (coordinates, loadedCallback) => {
 
-  squareFloor(coordinates)
-
-  loadBuildingsFile(() => addRandomBuilding(coordinates))
+  loadBuildingsFile(() => {
+    addRandomBuilding(coordinates)
+    squareFloor(coordinates, loadedCallback)
+  })
+  
 }
 
 /**

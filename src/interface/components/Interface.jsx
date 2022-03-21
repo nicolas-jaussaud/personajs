@@ -1,3 +1,4 @@
+import { app } from '../../core/app'
 import { useState } from 'react'
 
 import Controls from './Controls'
@@ -7,7 +8,11 @@ import VisualControls from './VisualControls'
 
 const Interface = () => {
 
-  const [section, openSection] = useState(false)
+  const [section, openSection] = useState(false)  
+  const [isLoading, setIsLoading] = useState(true)  
+
+  app.worldLoaded = () => setIsLoading(false)
+  
   const isMobile = 'ontouchstart' in document.documentElement
 
   const toggleSection = sectionName => section !== sectionName 
@@ -16,6 +21,13 @@ const Interface = () => {
 
   return(
     <div className='interface-container'>
+      
+      { isLoading &&
+        <div className='interface-loading interface-container'>
+          <div className='interface-loading-text'>Loading...</div>
+        </div>
+      }
+
       <nav className='interface-menu'>
         <li onClick={ () => toggleSection('controls') }> &#9965; Controls</li>
         <li onClick={ () => toggleSection('about') }>&#128712; About</li>

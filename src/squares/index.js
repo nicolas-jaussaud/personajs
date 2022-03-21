@@ -11,7 +11,7 @@ const init = () => app.squareLoaderReady = () => {
 
   // First square will be only floor 
   app.squareLoader.firstSquareType = 'empty'
-  app.squareLoader.registerSquareType('empty', 0, coordinates => squareFloor(coordinates))
+  app.squareLoader.registerSquareType('empty', 0, squareFloor)
 
   app.squareLoader.registerSquareType('buildings', 4, initBuildings)
 
@@ -21,7 +21,7 @@ const init = () => app.squareLoaderReady = () => {
 /**
  * All our square will use the same floor
  */
-const squareFloor = coordinates => {
+const squareFloor = (coordinates, loadedCallback) => {
 
   const squareSize = app.squareLoader.squareSize
 
@@ -35,6 +35,8 @@ const squareFloor = coordinates => {
   // Lawn
   const lawnSize = squareSize - (roadWidth / 2)
   addPlaneGeometry( lawnSize, coordinates, 0x55FF66, 2 )
+  
+  loadedCallback()
 }
 
 const addPlaneGeometry = (size, coordinates, color, zIndex) => {

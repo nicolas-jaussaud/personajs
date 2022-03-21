@@ -3,14 +3,13 @@ import { squareFloor, roadWidth }  from './'
 
 const threesPerSquare = 10
 
-const init = coordinates => {
+const init = (coordinates, loadedCallback) => {
   
-  squareFloor(coordinates)
-
   loadTreesFile(() => {
     for (let i = 0; i < threesPerSquare; i++) addRandomTree(coordinates)
   })
   
+  squareFloor(coordinates, loadedCallback)
 }
 
 /**
