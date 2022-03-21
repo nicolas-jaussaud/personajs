@@ -25,8 +25,38 @@ export default class Camera {
   init() {
 
     // Handle controls
-    document.addEventListener('keydown', this.controlsStart.bind(this), false)
-    document.addEventListener('keyup', this.controlsStop.bind(this), false)
+    // document.addEventListener('keydown', this.controlsStart.bind(this), false)
+    // document.addEventListener('keyup', this.controlsStop.bind(this), false)
+  }
+
+  startEvent(eventName) {
+
+    switch(eventName) {
+
+      case 'rotateLeft':  
+        this.directions.left = true
+      break;
+
+      case 'rotateRight':
+        this.directions.right = true
+      break;
+    }
+
+  }
+
+  endEvent(eventName) {
+
+    switch(eventName) {
+
+      case 'rotateLeft':  
+        this.directions.left = false
+      break;
+
+      case 'rotateRight':
+        this.directions.right = false
+      break;
+    }
+
   }
 
   controlsStart(event) {

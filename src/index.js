@@ -8,8 +8,6 @@ import { init as initStats } from './stats.js'
 
 window.onload = () => {
 
-  if(app.debug) initStats()
-
   initSquares()
 
   app.init('#app')

@@ -1,10 +1,16 @@
 import World from './classes/World'
 
 import { render } from './render'
+
 import { init as initLoaders } from './import/'
+import { init as initControls } from './controls/'
+import { init as initDebugStats } from './debug.js'
+
 import { app } from './app'
 
 export const init = selector => {
+
+  if( app.debug ) initDebugStats()
 
   app.element = document.querySelector(selector)
 
@@ -23,6 +29,8 @@ export const init = selector => {
   initLoaders()
 
   app.world = new World()
+
+  initControls()
 
   render()
   

@@ -44,10 +44,7 @@ export default class Character {
     this.loadAnimations()
     
     this.initAudio()
-
-    // Handle controls
-    document.addEventListener('keydown', this.controlsStart.bind(this), false)
-    document.addEventListener('keyup', this.controlsStop.bind(this), false)
+    
   }
 
   /**
@@ -177,6 +174,97 @@ export default class Character {
     isMoving && !this.isJumping()  
       ? this.footstep.play()
       : this.footstep.pause()
+  }
+
+  startEvent(eventName) {
+
+    switch(eventName) {
+      
+      // Move
+
+      case 'moveForward':
+        this.do('run')
+        this.directions.forward = true
+      break;
+
+      case 'moveBackward':
+        this.do('run-backward')
+        this.directions.backward = true
+      break;
+      
+      case 'moveLeft':
+        this.do('run-left')
+        this.directions.left = true
+      break;
+
+      case 'moveRight':
+        this.do('run-right')
+        this.directions.right = true
+      break;
+
+      // Jump
+
+      case 'jump':
+
+        if(this.directions.up === true || this.directions.down === true) return;
+
+        if(this.directions.forward === true) {
+          this.do('jump-forward')
+        }
+        else if(this.directions.backward === true) {
+          this.do('jump-backward')
+        }
+        // No animation for left or right for now
+        else if(this.directions.left === true || this.directions.right === true) {
+          this.do('jump-forward')
+        }
+        // For static jump, we don't really move
+        else {
+          this.do('jump')
+          return;
+        } 
+
+        this.directions.up = true
+        
+        this.initialJumpPosition = this.object.position.y
+        this.targetJumpPosition = this.object.position.y + this.jumpHeight
+      
+        // Will dicrease until we go down
+        this.jumpSpeed = this.jumpMaxSpeed
+      break;
+    }
+
+  }
+
+  endEvent(eventName) {
+
+    switch(eventName) {
+
+      // Move
+
+      case 'moveForward':
+        this.end('run')
+        this.directions.forward = false
+      break;
+
+      case 'moveLeft':
+        this.end('run-left')
+        this.directions.left = false
+      break;
+
+      case 'moveRight':             
+        this.end('run-right')
+        this.directions.right = false
+      break;
+
+      case 'moveBackward':
+        this.end('run-backward')
+        this.directions.backward = false
+      break;
+
+      // End move
+
+    }
   }
 
   controlsStart(event) {
