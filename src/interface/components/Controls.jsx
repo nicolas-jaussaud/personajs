@@ -13,16 +13,19 @@ const Controls = () => {
   return(
     <>
       <div className='interafce-row'>
-      <div className='interafce-row'>
         <label>Gamepad layout</label>
         <i>Gamepad is supported but not documented</i>
       </div>
+      <hr />
+      <br />
+      <div>
         <label>Keyboard layout</label>
         <select value={ keyboard } onChange={ e => setKeyboard(e.target.value) }>
           <option value="qwerty">qwerty</option>
           <option value="azerty">azerty</option>
         </select>
       </div>
+      <br />
       <div className='interafce-row'>
         <strong>Move</strong>
         <span>{ moveKeys } (or arrows)</span>
@@ -35,7 +38,6 @@ const Controls = () => {
         <strong>Jump</strong>
         <span>Spacebar</span>
       </div>
-      <hr />
     </>
   )
 }
