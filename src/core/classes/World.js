@@ -70,7 +70,7 @@ export default class World {
       const hitBox = new THREE.Box3().setFromObject(object)
       const collision = objectHitBox.intersectsBox(hitBox)
 
-      if( collision ) isCollision = true
+      if( collision ) isCollision = object
     })
 
     return isCollision

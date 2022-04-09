@@ -6,6 +6,7 @@ export default class Character {
   constructor(object) {
       
     this.object = object
+    this.status = 'alive'
 
     this.speed = 0.25
 
@@ -34,6 +35,8 @@ export default class Character {
       'jump',
       'jump-forward',
       'jump-backward',
+
+      'fall'
     ]
     
     this.init()
@@ -82,13 +85,22 @@ export default class Character {
     })
   }
 
-  render(clock) {
+  setStatus(newStatus) {
 
+    this.status = newStatus
+
+    if(newStatus === 'dead') app.deadCallback()
+  }
+
+  render(clock) {
+    
     // Animate character
     if (this.mixer) {
       const delta = clock.getDelta()
       this.mixer.update(delta)
     }
+
+    if( this.status === 'dead' ) return;
 
     // Save in case we need to reset position in case of collision
     this.previousPosition = this.object.position.clone()
@@ -135,22 +147,46 @@ export default class Character {
       }
     }
 
+    const collision = app.world.isCollision(this.object)
+
+    if( collision === false ) return;
+
     /**
-     * If there is a collision, we reset to the previous collision
-     * 
-     * This is OK with a static word, not sure about what will happen with moving things
+     * Collision with a car, death + fly
+     */
+    if( collision.type && collision.type === 'car' ) {
+      
+      const vectorX = collision.position.x - this.object.position.x  
+      const vectorZ = collision.position.z - this.object.position.z  
+
+      this.setStatus('dead')
+      
+      this.do('fall')
+
+      setInterval(() => {
+
+        this.object.position.x -= vectorX
+        this.object.position.z -= vectorZ
+  
+        this.object.rotation.x -= 0.01 // This is for fun
+        this.object.position.y += 0.05
+      })
+      return;
+    }
+
+    /**
+     * If there is a collision with a static object, we reset to the previous collision
      * 
      * @see https://stackoverflow.com/a/44938186/10491705
      */
-    if( app.world.isCollision(this.object) ) {
 
-      // If we jump, we want to keep Y to move
-      this.object.position.set(
-        this.previousPosition.x, 
-        this.directions.up === true ? this.object.position.y : this.previousPosition.y, 
-        this.previousPosition.z
-      )
-    }
+    // If we jump, we want to keep Y to move
+    this.object.position.set(
+      this.previousPosition.x, 
+      this.directions.up === true ? this.object.position.y : this.previousPosition.y, 
+      this.previousPosition.z
+    )
+
   }
 
   initAudio() {

@@ -1,6 +1,7 @@
 import { app } from '../app'
 
 import Car from './models/Car'
+import { uuid } from '../utils'
 
 export default class CarLoader {
 
@@ -59,9 +60,14 @@ export default class CarLoader {
 
     const fileName = 'car/Car.fbx'
     const car = app.objects[ fileName ].clone()
+
     car.scale.set(0.012, 0.012, 0.012)
-    
+    car.uuid = uuid()
+    car.type = 'car'
+
     app.scene.add(car)
+
+    app.world.worldObjects.push(car) 
 
     const squareLoader = app.world.squareLoader
 
@@ -90,8 +96,12 @@ export default class CarLoader {
 
           clearInterval(moveInterval)
 
-          app.scene.remove(car.config.object)
+          const carId = car.config.object.uuid
 
+          app.world.worldObjects = app.world.worldObjects.filter(object => (object.uuid !== carId)) 
+
+          app.scene.remove(car.config.object)
+          
           this.carNumber = this.carNumber - 1
 
           if( app.debug ) {

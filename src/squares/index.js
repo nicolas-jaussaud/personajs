@@ -37,6 +37,7 @@ const squareFloor = (coordinates, loadedCallback) => {
   addPlaneGeometry( lawnSize, coordinates, 0x55FF66, 2 )
   
   loadedCallback()
+  
 }
 
 const addPlaneGeometry = (size, coordinates, color, zIndex) => {

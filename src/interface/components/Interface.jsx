@@ -9,10 +9,13 @@ import VisualControls from './VisualControls'
 const Interface = () => {
 
   const [section, openSection] = useState(false)  
-  const [isLoading, setIsLoading] = useState(true)  
-
-  app.worldLoaded = () => setIsLoading(false)
   
+  const [isLoading, setIsLoading] = useState(true)  
+  const [isDead, setIsDead] = useState(false)
+
+  app.worldLoaded  = () => setIsLoading(false)
+  app.deadCallback = () => setIsDead(true)
+
   const isMobile = 'ontouchstart' in document.documentElement
 
   const toggleSection = sectionName => section !== sectionName 
@@ -25,6 +28,12 @@ const Interface = () => {
       { isLoading &&
         <div className='interface-loading interface-container'>
           <div className='interface-loading-text'>Loading...</div>
+        </div>
+      }
+
+      { isDead &&
+        <div className='interface-loading interface-container'>
+          <div className='interface-loading-text'>Game over</div>
         </div>
       }
 
